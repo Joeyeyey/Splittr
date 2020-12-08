@@ -1,12 +1,14 @@
 package com.example.splittr;
 
+import java.math.BigDecimal;
+
 public class Item {
 
     private String name;
-    private float cost;
+    private double cost;
     private boolean taxable;
 
-    public Item(String name, float cost, boolean taxable) {
+    public Item(String name, double cost, boolean taxable) {
         this.name = name;
         this.cost = cost;
         this.taxable = taxable;
@@ -20,11 +22,11 @@ public class Item {
         this.name = name;
     }
 
-    public float getCost() {
+    public double getCost() {
         return cost;
     }
 
-    public void setCost(float cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 

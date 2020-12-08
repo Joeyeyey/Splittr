@@ -4,36 +4,26 @@ import java.util.ArrayList;
 
 public class ReceiptContainer {
 
-    private static int receipt_count = 0;
-
-    private int id;
+    private int num_receipts;
     private String owner;
     private ArrayList<Receipt> receipts;
 
     public ReceiptContainer(int id, String owner) {
-        this.id = id;
+        this.num_receipts = 0;
         this.owner = owner;
         this.receipts = new ArrayList<>();
     }
 
     public void createReceipt() {
-        receipts.add(new Receipt(generateId(), "test label"));
+        receipts.add(new Receipt(num_receipts++, "test label"));
     }
 
-    public void deleteReceipt(int id) {
-        receipts.remove(id);
+    public void deleteReceipt(int index) {
+        receipts.remove(index);
     }
 
-    private static int generateId() {
-        return receipt_count++;
-    }
-
-    public static int getReceiptCount() {
-        return receipt_count;
-    }
-
-    public int getId() {
-        return id;
+    public int getReceiptCount() {
+        return num_receipts;
     }
 
     public String getOwner() {
@@ -45,6 +35,17 @@ public class ReceiptContainer {
     }
 
     public static void main(String[] args) {
+        ReceiptContainer sample_container = new ReceiptContainer(0, "user");
+        sample_container.createReceipt();
+        sample_container.createReceipt();
+        sample_container.createReceipt();
+        System.out.println(String.format("Number of receipts: %d", sample_container.getReceiptCount()));
 
+        Receipt sample_receipt = new Receipt(3, "Today's McDeez");
+        sample_receipt.addItem(new Item("Cheeseburger", 1.50, true));
+        sample_receipt.addItem(new Item("20pc McNuggets", 5.00, true));
+        sample_receipt.addItem(new Item("Quarter-Pounder Deluxe", 6.29, true));
+        sample_receipt.addItem(new Item("Large Drink", 1.00, true));
+        sample_receipt.printItems();
     }
 }
