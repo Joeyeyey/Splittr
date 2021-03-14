@@ -1,19 +1,19 @@
 package com.example.splittr;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
 
 public class Item {
 
     private String name;
-    private double cost;
+    private BigDecimal cost;
     private boolean taxable;
     private ArrayList<User> owners;
 
     public Item(String name, double cost, boolean taxable) {
         this.name = name;
-        this.cost = cost;
+        this.cost = new BigDecimal(cost);
         this.taxable = taxable;
         this.owners = new ArrayList<>();
     }
@@ -26,11 +26,11 @@ public class Item {
         this.name = name;
     }
 
-    public double getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
@@ -56,5 +56,9 @@ public class Item {
 
     public void addOwners(List<User> users) {
         this.owners.addAll(users);
+    }
+
+    public int ownerCount() {
+        return this.owners.size();
     }
 }
