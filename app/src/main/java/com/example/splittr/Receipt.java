@@ -2,6 +2,7 @@ package com.example.splittr;
 
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Receipt {
 
@@ -43,6 +44,10 @@ public class Receipt {
 
     public void addItem(Item new_item) {
         items.add(new_item);
+    }
+
+    public void addItems(List<Item> items) {
+        this.items.addAll(items);
     }
 
     public void removeItem(int index) {
