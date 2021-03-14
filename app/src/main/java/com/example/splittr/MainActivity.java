@@ -4,14 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.widget.*;
 import android.view.*;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int PICK_PHOTO_CODE = 123;
-    private ImageButton takePhotoButton;
     private ImageButton receiptButton;
+    private ImageButton takePhotoButton;
     private ImageButton photoGalleryButton;
 
     @Override
@@ -20,21 +20,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         receiptButton = (ImageButton) findViewById(R.id.manageExistingButton);
-        receiptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openReceiptActivity();
-            }
+        receiptButton.setOnClickListener(v -> {
+            openReceiptActivity();
         });
 
-        takePhotoButton = (ImageButton) findViewById(R.id.takePictureButton);
-        takePhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCameraActivity();
-            }
+        takePhotoButton = (ImageButton) findViewById(R.id.takePhotoButton);
+        takePhotoButton.setOnClickListener(v -> {
+            openCameraActivity();
         });
-
     }
 
     public void openReceiptActivity() {

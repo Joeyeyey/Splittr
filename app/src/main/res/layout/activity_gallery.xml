@@ -10,8 +10,13 @@
         android:id="@+id/background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
         android:scaleX="1.2"
         android:scaleY="1.2"
-        app:srcCompat="@drawable/background" />
+        app:srcCompat="@drawable/background_main" />
 
 </RelativeLayout>
