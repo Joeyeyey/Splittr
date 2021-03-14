@@ -2,6 +2,7 @@ package com.example.splittr;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Item {
 
@@ -14,6 +15,7 @@ public class Item {
         this.name = name;
         this.cost = cost;
         this.taxable = taxable;
+        this.owners = new ArrayList<>();
     }
 
     public String getName() {
@@ -46,5 +48,13 @@ public class Item {
 
     public void setOwners(ArrayList<User> owners) {
         this.owners = owners;
+    }
+
+    public void addOwner(User user) {
+        this.owners.add(user);
+    }
+
+    public void addOwners(List<User> users) {
+        this.owners.addAll(users);
     }
 }
