@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +21,7 @@ public class receiptActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
-//        getSupportActionBar().setTitle("Existing Receipts");
+        getSupportActionBar().setTitle("Existing Receipts");
 
         initReceiptNames();
     }
@@ -28,9 +29,12 @@ public class receiptActivity extends AppCompatActivity {
     private void initReceiptNames() {
         Log.d(TAG, "initReceiptNames: preparing receipts");
 
-        mReceiptNames.add("receipt 1");
-        mReceiptNames.add("Mcdonald");
-        mReceiptNames.add("Costco");
+        mReceiptNames.add("Walmart 12/28");
+        mReceiptNames.add("McDonald 1/02");
+        mReceiptNames.add("Costco 1/06");
+        mReceiptNames.add("House Lunch 1/09");
+        mReceiptNames.add("Snowboarding 1/16");
+        mReceiptNames.add("Fun activity here 1/21");
 
         initRecyclerView();
     }
@@ -38,6 +42,7 @@ public class receiptActivity extends AppCompatActivity {
     private void initRecyclerView() {
         Log.d(TAG, "initRecyclerView: init recycler view");
         RecyclerView recyclerView = findViewById(R.id.recyclerView_name_receipt);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mReceiptNames);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
