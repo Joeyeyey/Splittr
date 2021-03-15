@@ -27,7 +27,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            receiptName = itemView.findViewById(R.id.receipt_name);
+            receiptName = itemView.findViewById(R.id.text_receipt_name);
             parentLayout = itemView.findViewById(R.id.parent_list_layout);
         }
 

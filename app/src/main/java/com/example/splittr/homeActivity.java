@@ -17,7 +17,7 @@ public class homeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        startButton = (Button) findViewById(R.id.start_button);
+        startButton = (Button) findViewById(R.id.button_start);
         startButton.setOnClickListener(v -> {
             openMainActivity();
         });

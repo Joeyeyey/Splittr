@@ -20,7 +20,7 @@ public class receiptActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
-        getSupportActionBar().setTitle("Existing Receipts");
+//        getSupportActionBar().setTitle("Existing Receipts");
 
         initReceiptNames();
     }
@@ -37,7 +37,7 @@ public class receiptActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         Log.d(TAG, "initRecyclerView: init recycler view");
-        RecyclerView recyclerView = findViewById(R.id.receiptRecyclerV_view);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView_name_receipt);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mReceiptNames);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

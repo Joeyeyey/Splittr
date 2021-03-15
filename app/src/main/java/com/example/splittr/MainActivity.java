@@ -17,12 +17,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        takePhotoButton = (ImageButton) findViewById(R.id.takePhotoButton);
+        takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
         takePhotoButton.setOnClickListener(v -> {
             openCameraActivity();
         });
 
-        receiptButton = (ImageButton) findViewById(R.id.manageExistingButton);
+        receiptButton = (ImageButton) findViewById(R.id.button_manageExisting_main);
         receiptButton.setOnClickListener(v -> {
             openReceiptActivity();
         });
