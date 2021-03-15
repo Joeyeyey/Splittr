@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 100;
     static final int REQUEST_GALLERY = 200;
 
-
     private ImageButton takePhotoButton;
     private ImageButton photoGalleryButton;
     private ImageButton manageExistingButton;
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        photoImage = (ImageView) findViewById(R.id.image_taken);
+//        photoImage = (ImageView) findViewById(R.id.image_taken);
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
         takePhotoButton.setOnClickListener(v -> {
             dispatchTakePictureIntent();
