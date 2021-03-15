@@ -13,7 +13,7 @@ public class Item {
 
     public Item(String name, double cost, boolean taxable) {
         this.name = name;
-        this.cost = new BigDecimal(cost);
+        this.cost = BigDecimal.valueOf(cost);
         this.taxable = taxable;
         this.owners = new ArrayList<>();
     }
