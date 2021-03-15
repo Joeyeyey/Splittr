@@ -3,7 +3,6 @@ package com.example.splittr;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.ImageButton;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        photoImage = (ImageView) findViewById(R.id.image_thumbnail);
+        photoImage = (ImageView) findViewById(R.id.image_taken);
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
         takePhotoButton.setOnClickListener(v -> {
             dispatchTakePictureIntent();
@@ -70,15 +69,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onCaptureImageResult(Intent data) {
+
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Activity.RESULT_OK)
             switch (requestCode){
                 case REQUEST_IMAGE_CAPTURE:
-                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-                    photoImage.setImageBitmap(photo);
+                    onCaptureImageResult(data);
             }
+
     }
 
 }
