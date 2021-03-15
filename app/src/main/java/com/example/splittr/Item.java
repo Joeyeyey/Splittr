@@ -1,7 +1,7 @@
 package com.example.splittr;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 
 public class Item {
@@ -57,6 +57,8 @@ public class Item {
     public void addOwners(List<User> users) {
         this.owners.addAll(users);
     }
+
+    public void removeOwner(User user) { this.owners.remove(user); }
 
     public int ownerCount() {
         return this.owners.size();
