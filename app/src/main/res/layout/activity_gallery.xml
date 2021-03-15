@@ -17,6 +17,7 @@
         android:layout_centerInParent="true"
         android:scaleX="1.2"
         android:scaleY="1.2"
-        app:srcCompat="@drawable/background_main" />
+        app:srcCompat="@drawable/background_main"
+        android:contentDescription="@string/background_image" />
 
 </RelativeLayout>
