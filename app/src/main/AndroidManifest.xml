@@ -18,9 +18,9 @@
         android:theme="@style/Theme.Splittr">
         <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".RegisterUser" />
-        <activity android:name=".homeActivity" />
+        <activity android:name=".LoginSystemActivity" />
         <activity android:name=".selectedImageActivity"></activity>
-        <activity android:name=".LoginSystemActivity">
+        <activity android:name=".homeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
