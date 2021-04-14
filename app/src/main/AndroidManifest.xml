@@ -15,12 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Splittr">
-        <activity android:name=".MainReceiptActivity">
+        <activity android:name=".MainReceiptActivity" />
         <activity android:name=".selectedImageActivity"></activity>
         <activity android:name=".homeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
