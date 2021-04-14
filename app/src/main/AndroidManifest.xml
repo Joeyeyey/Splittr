@@ -5,6 +5,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -15,8 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Splittr">
+        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".RegisterUser" />
+        <activity android:name=".homeActivity" />
         <activity android:name=".MainReceiptActivity" />
-        <activity android:name=".selectedImageActivity"></activity>
+        <activity android:name=".selectedImageActivity"/>
+        <activity android:name=".LoginSystemActivity"/>
         <activity android:name=".homeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
