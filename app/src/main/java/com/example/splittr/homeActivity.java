@@ -1,15 +1,15 @@
 package com.example.splittr;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class homeActivity extends AppCompatActivity {
-    private ImageButton startButton;
+    private Button startButton;
     private boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -17,7 +17,7 @@ public class homeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        startButton = (ImageButton) findViewById(R.id.start_button);
+        startButton = (Button) findViewById(R.id.button_start);
         startButton.setOnClickListener(v -> {
             openMainActivity();
         });
