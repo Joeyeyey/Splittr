@@ -18,7 +18,6 @@
         android:theme="@style/Theme.Splittr">
         <activity android:name=".ProfileActivity"/>
         <activity android:name=".RegisterUser" />
-        <activity android:name=".homeActivity" />
         <activity android:name=".MainReceiptActivity" />
         <activity android:name=".selectedImageActivity"/>
         <activity android:name=".LoginSystemActivity"/>
