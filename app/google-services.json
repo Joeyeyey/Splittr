@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "69645401703",
+    "firebase_url": "https://splittr-login-system-3b5cd-default-rtdb.firebaseio.com",
+    "project_id": "splittr-login-system-3b5cd",
+    "storage_bucket": "splittr-login-system-3b5cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69645401703:android:edb0ecac6659d6e939dec2",
+        "android_client_info": {
+          "package_name": "com.example.authapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69645401703-mk316ko10c6guimvug7h84j0ca625fsv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg0WeUi3erOvfUlnmZZk4lfTDhlZpR4vU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69645401703-mk316ko10c6guimvug7h84j0ca625fsv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69645401703:android:cff11b28845145b639dec2",
+        "android_client_info": {
+          "package_name": "com.example.splittr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69645401703-mk316ko10c6guimvug7h84j0ca625fsv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg0WeUi3erOvfUlnmZZk4lfTDhlZpR4vU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69645401703-mk316ko10c6guimvug7h84j0ca625fsv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
