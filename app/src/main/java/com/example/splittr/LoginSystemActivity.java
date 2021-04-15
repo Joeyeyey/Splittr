@@ -92,7 +92,7 @@ public class LoginSystemActivity extends AppCompatActivity implements View.OnCli
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     //redirect to user profile
-                    startActivity(new Intent(LoginSystemActivity.this, com.example.splittr.ProfileActivity.class));
+                    startActivity(new Intent(LoginSystemActivity.this, MainActivity.class));
                 }else{
                     Toast.makeText(LoginSystemActivity.this, "Failed to login. Please check your credentials", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.INVISIBLE);
