@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Splittr</string>
+
+    <string name="add_receipt_button">Add a new receipt</string>
+    <string name="receiptTitle">Costco Run 09/15/2020</string>
+    <string name="receiptDate">ReceiptDate</string>
+    <string name="editing_header_title">Currently Editing Receipt</string>
+    <string name="receiptTotal">Total: $123.45</string>
+
     <string name="background_image">Background image</string>
     <string name="get_started">Get Started</string>
 

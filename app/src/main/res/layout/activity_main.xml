@@ -68,4 +68,13 @@
         android:background="#00000000"
         app:srcCompat="@drawable/manage_existing_button" />
 
+    <ImageView
+        android:id="@+id/image_thumbnail"
+        android:layout_width="300dp"
+        android:layout_height="327dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="454dp" />
+
 </RelativeLayout>
