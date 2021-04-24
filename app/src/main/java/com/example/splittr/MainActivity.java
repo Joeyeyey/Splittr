@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            galleryAddPic();
+//            galleryAddPic();  //Not working
         }
     }
 
@@ -126,13 +127,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void galleryAddPic() {
-        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("content://" + currentPhotoPath)));
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
-        Toast.makeText(this, "adding image", Toast.LENGTH_LONG).show();
+        Log.d("galleryAdd", "Adding Image");
     }
 
     private static boolean hasPermissions(Context context, String... permissions) {
@@ -152,7 +152,8 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_WRITE_PERM: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
+                    Log.d("permissionsRequest", "Write perm granted");
                 } else {
                     Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
                 }
