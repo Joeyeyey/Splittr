@@ -19,8 +19,8 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    static final int REQUEST_IMAGE_CAPTURE = 100;
-    static final int REQUEST_GALLERY = 200;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_GALLERY = 2;
 
     private ImageButton takePhotoButton;
     private ImageButton photoGalleryButton;
@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
         takePhotoButton.setOnClickListener(v -> {
             dispatchTakePictureIntent();
-            galleryAddPic();
         });
 
         photoGalleryButton = (ImageButton) findViewById(R.id.button_gallery_main);
@@ -104,19 +103,19 @@ public class MainActivity extends AppCompatActivity {
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
-        sendBroadcast(mediaScanIntent);
+        this.sendBroadcast(mediaScanIntent);
     }
 
+//    Toast.makeText(this, currentPhotoPath, Toast.LENGTH_SHORT).show();
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_IMAGE_CAPTURE:
+                    galleryAddPic();
             }
-
         }
-
     }
 
 }
