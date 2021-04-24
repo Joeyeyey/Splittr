@@ -1,6 +1,6 @@
 package com.example.splittr;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_GALLERY = 2;
-    static final int REQUEST = 112;
+    static final int REQUEST_WRITE_PERM = 112;
 
     private ImageButton takePhotoButton;
     private ImageButton photoGalleryButton;
@@ -41,16 +40,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] PERMISSIONS = {android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            if (!hasPermissions(this, PERMISSIONS)) {
-                ActivityCompat.requestPermissions((Activity) this, PERMISSIONS, REQUEST );
-            } else {
-                Log.d("Permissions", "App has permissions");
-            }
-        } else {
-            Log.d("Build", "Version < 23");
-        }
+        String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_WRITE_PERM);
+//        if (!hasPermissions(this, PERMISSIONS)) {
+//            ActivityCompat.requestPermissions((Activity) this, PERMISSIONS, REQUEST_WRITE_PERM );
+//        } else {
+//            Log.d("Permissions", "App has permissions");
+//        }
 
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
         takePhotoButton.setOnClickListener(v -> {
@@ -92,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);    // FOR PRIVATE
+        File storageDir = Environment.getExternalStorageDirectory();    // PUBLIC
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",  /* suffix */
@@ -129,11 +126,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void galleryAddPic() {
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("content://" + currentPhotoPath)));
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
+        Toast.makeText(this, "adding image", Toast.LENGTH_LONG).show();
     }
 
     private static boolean hasPermissions(Context context, String... permissions) {
@@ -151,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQUEST: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //do here
+            case REQUEST_WRITE_PERM: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
                 }
