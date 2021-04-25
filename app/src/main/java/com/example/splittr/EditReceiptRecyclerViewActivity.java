@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -13,17 +14,23 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class EditReceiptRecyclerViewActivity extends AppCompatActivity {
+public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity {
 
     private static final String TAG = "Receipt Recycler View";
     ImageButton btn_addOne;
+    Button btn_split_receipt;
+    Button btn_split_receipt_with_tt;
 
     MyApplication myApplication = (MyApplication) this.getApplication();
 
     //declare arraylist
     List<ReceiptComponents> receiptArrayList;
+
+    //declare hashmap
+    HashMap<String, Double> map = new HashMap<String, Double>();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -38,11 +45,14 @@ public class EditReceiptRecyclerViewActivity extends AppCompatActivity {
         receiptArrayList = myApplication.getReceiptArrayList();
 
         Log.d(TAG, "onCreate: " + receiptArrayList.toString());
-        //Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Arraylist size = " + receiptArrayList.size(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Arraylist size = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
 
         btn_addOne = findViewById(R.id.btn_addOne);
+        btn_split_receipt = findViewById(R.id.btn_split_receipt);
+        btn_split_receipt_with_tt = findViewById(R.id.btn_split_receipt_with_tt);
 
+        //set onclick action for add button
         btn_addOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,8 +74,33 @@ public class EditReceiptRecyclerViewActivity extends AppCompatActivity {
 
         //attach ItemTouchHelper to RecyclerView
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
+        btn_split_receipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //serach through each item to find unique person names
+                //add up costs for each person
+                for (ReceiptComponents item : receiptArrayList) {
+                    String name = item.getPerson();
+                    double cost = item.getCost();
+                    if (map.containsKey(name)) {
+                        map.put(name, map.get(name) + cost);
+                    } else {
+                        map.put(name, cost);
+                    }
+                }
+
+                for (String name : map.keySet()){
+                    System.out.println(name + ": $" + map.get(name));
+                }
+
+                Intent intent = new Intent(EditReceiptRecyclerViewActivity.this, showSplitReceiptActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
+    //initialize ItemTouchHelper to delete receipt items
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {

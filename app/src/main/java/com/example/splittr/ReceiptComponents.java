@@ -54,4 +54,8 @@ public class ReceiptComponents {
     public void setPerson(String person) {
         this.person = person;
     }
+//    //sort arraylist
+//    public int compareTo(ReceiptComponents other){
+//        return this.person.compareTo(other.getPerson());
+//    }
 }
