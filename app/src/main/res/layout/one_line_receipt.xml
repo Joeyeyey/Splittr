@@ -4,24 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/oneLineReceiptLayout"
     android:layout_width="wrap_content"
-    android:background="@drawable/selector_states"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_states">
 
 
     <TextView
         android:id="@+id/tv_item"
-        android:layout_width="140dp"
+        android:layout_width="160dp"
         android:layout_height="match_parent"
         android:text="Item"
-        android:textSize="20dp"
-        android:textColor="@color/darkblue"
         android:textAlignment="center"
+        android:textColor="@color/darkblue"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_cost"
-        app:layout_constraintHorizontal_bias="0.405"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_cost"
@@ -29,29 +28,27 @@
         android:layout_height="match_parent"
         android:text="Cost"
         android:textAlignment="center"
-        android:textSize="20dp"
         android:textColor="@color/darkblue"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_person"
-        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_person"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
         android:text="Person"
         android:textAlignment="center"
-        android:textSize="20dp"
         android:textColor="@color/darkblue"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.839"
+        app:layout_constraintHorizontal_bias="0.883"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/divider"
