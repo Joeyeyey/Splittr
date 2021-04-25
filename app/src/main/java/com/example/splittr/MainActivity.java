@@ -5,11 +5,15 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton photoGalleryButton;
     private ImageButton manageExistingButton;
     private ImageView photoImage;
+    private Button signout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,22 @@ public class MainActivity extends AppCompatActivity {
         manageExistingButton.setOnClickListener(v -> {
             openReceiptActivity();
         });
+
+        //assign button to signout variable
+        signout = (Button) findViewById(R.id.btn_signout);
+
+        //set onclick listner for button
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //get instance from firebase to sign user out
+                //redirect to login page
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, LoginSystemActivity.class));
+            }
+        });
+
+
 
     }
 

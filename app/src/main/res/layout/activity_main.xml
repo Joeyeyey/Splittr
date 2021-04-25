@@ -24,10 +24,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="82dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="455dp"
         app:srcCompat="@drawable/give_me_receipt" />
 
     <ImageButton
@@ -68,13 +72,28 @@
         android:background="#00000000"
         app:srcCompat="@drawable/manage_existing_button" />
 
-    <ImageView
-        android:id="@+id/image_thumbnail"
-        android:layout_width="300dp"
-        android:layout_height="327dp"
+    <Button
+        android:id="@+id/btn_signout"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="31dp"
-        android:layout_marginBottom="454dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="609dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/rounded_button_brown"
+        android:text="Sign Out"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.317"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.767" />
 
 </RelativeLayout>
