@@ -77,11 +77,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.01" />
 
+
     <Button
         android:id="@+id/btn_split_receipt"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_corner_light_blue"
         android:drawableLeft="@drawable/ic_baseline_scissors"
         android:paddingLeft="10dp"
@@ -92,24 +93,6 @@
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btn_split_receipt_with_tt"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/rounded_corner_light_red"
-        android:drawableLeft="@drawable/ic_baseline_scissors"
-        android:paddingLeft="10dp"
-        android:paddingRight="20dp"
-        android:text="Split Receipt with Tax and/or Tip"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

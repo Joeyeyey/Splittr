@@ -22,7 +22,8 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
     private static final String TAG = "Receipt Recycler View";
     ImageButton btn_addOne;
     Button btn_split_receipt;
-    Button btn_split_receipt_with_tt;
+    double taxRate = 0.085;
+    double tipPercent = 0.15;
 
     MyApplication myApplication = (MyApplication) this.getApplication();
 
@@ -50,7 +51,6 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
 
         btn_addOne = findViewById(R.id.btn_addOne);
         btn_split_receipt = findViewById(R.id.btn_split_receipt);
-        btn_split_receipt_with_tt = findViewById(R.id.btn_split_receipt_with_tt);
 
         //set onclick action for add button
         btn_addOne.setOnClickListener(new View.OnClickListener() {
@@ -78,26 +78,12 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
         btn_split_receipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //serach through each item to find unique person names
-                //add up costs for each person
-                for (ReceiptComponents item : receiptArrayList) {
-                    String name = item.getPerson();
-                    double cost = item.getCost();
-                    if (map.containsKey(name)) {
-                        map.put(name, map.get(name) + cost);
-                    } else {
-                        map.put(name, cost);
-                    }
-                }
-
-                for (String name : map.keySet()){
-                    System.out.println(name + ": $" + map.get(name));
-                }
 
                 Intent intent = new Intent(EditReceiptRecyclerViewActivity.this, showSplitReceiptActivity.class);
                 startActivity(intent);
             }
         });
+
     }
 
     //initialize ItemTouchHelper to delete receipt items
