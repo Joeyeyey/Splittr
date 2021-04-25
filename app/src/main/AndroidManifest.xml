@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,13 +22,15 @@
         <activity android:name=".MainReceiptActivity" />
         <activity android:name=".selectedImageActivity"/>
         <activity android:name=".LoginSystemActivity"/>
-        <activity android:name=".homeActivity">
+        <activity android:name=".ReceiptEditActivity"/>
+        <activity android:name=".AddEditOne"/>
+        <activity android:name=".EditReceiptRecyclerViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ReceiptEditActivity" />
+        <activity android:name=".homeActivity" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".receiptActivity"

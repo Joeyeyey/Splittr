@@ -17,6 +17,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     List<ReceiptComponents> receiptArrayList;
     Context context;
+    private int selectedPos = RecyclerView.NO_POSITION;
 
     public RecycleViewAdapter(List<ReceiptComponents> receiptArrayList, Context context) {
         this.receiptArrayList = receiptArrayList;
@@ -38,9 +39,17 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         holder.tv_item.setText(receiptArrayList.get(position).getItem());
         holder.tv_cost.setText(String.valueOf(receiptArrayList.get(position).getCost()));
         holder.tv_person.setText(receiptArrayList.get(position).getPerson());
+        holder.itemView.setSelected(selectedPos == position);
+
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //change recyclerview item colors
+                notifyItemChanged(selectedPos);
+                selectedPos = position;
+                notifyItemChanged(selectedPos);
+
                 //send control to AddEditOne activity
                 Intent intent = new Intent(context, AddEditOne.class);
                 intent.putExtra("id", receiptArrayList.get(position).getId());

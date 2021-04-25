@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightgray"
     tools:context=".EditReceiptRecyclerViewActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lv_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="652dp"
+        android:background="@drawable/selector_states"
+        android:layout_height="710dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.727"
@@ -19,13 +21,58 @@
 
     <ImageButton
         android:id="@+id/btn_addOne"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/lv_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023"
+        app:layout_constraintVertical_bias="0.01"
         app:srcCompat="@drawable/ic_baseline_add_24" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Items"
+        android:textSize="30dp"
+        android:textColor="@color/pink"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cost"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/pink"
+        app:layout_constraintBottom_toBottomOf="@+id/lv_recyclerview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Person"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/pink"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.838"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01" />
 </androidx.constraintlayout.widget.ConstraintLayout>

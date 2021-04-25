@@ -1,6 +1,7 @@
 package com.example.splittr;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ public class MyApplication extends Application {
 
     private static List<ReceiptComponents> receiptArrayList = new ArrayList<ReceiptComponents>();
     //keep track of next item in list
-    private static int nextId = 12;
+    private static int nextId = receiptArrayList.size() + 1;
 
     public MyApplication() {
         fillArrayList();
@@ -28,6 +29,13 @@ public class MyApplication extends Application {
         ReceiptComponents p9 = new ReceiptComponents(9,"Eggs", 50.39, "None");
         ReceiptComponents p10 = new ReceiptComponents(10,"Eggs", 50.39, "None");
         ReceiptComponents p11 = new ReceiptComponents(11,"Eggs", 50.39, "None");
+        ReceiptComponents p12 = new ReceiptComponents(12,"Eggs", 0, "None");
+        ReceiptComponents p13 = new ReceiptComponents(13,"Eggs", 50.39, "None");
+        ReceiptComponents p14 = new ReceiptComponents(14,"Eggs", 50.39, "None");
+        ReceiptComponents p15 = new ReceiptComponents(15,"Eggs", 50.39, "None");
+        ReceiptComponents p16 = new ReceiptComponents(16,"Eggs", 50.39, "None");
+        ReceiptComponents p17 = new ReceiptComponents(17,"Eggs", 50.39, "None");
+
 
         receiptArrayList.add(p0);
         receiptArrayList.add(p1);
@@ -41,6 +49,13 @@ public class MyApplication extends Application {
         receiptArrayList.add(p9);
         receiptArrayList.add(p10);
         receiptArrayList.add(p11);
+        receiptArrayList.add(p12);
+        receiptArrayList.add(p13);
+        receiptArrayList.add(p14);
+        receiptArrayList.add(p15);
+        receiptArrayList.add(p16);
+        receiptArrayList.add(p17);
+
     }
 
     public static List<ReceiptComponents> getReceiptArrayList() {
