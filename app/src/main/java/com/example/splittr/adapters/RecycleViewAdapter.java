@@ -1,4 +1,4 @@
-package com.example.splittr;
+package com.example.splittr.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.splittr.AddEditOne;
+import com.example.splittr.R;
+import com.example.splittr.ReceiptComponents;
 
 import java.util.List;
 

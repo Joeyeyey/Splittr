@@ -6,13 +6,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.splittr.adapters.RecycleViewAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
         setContentView(R.layout.edit_receipt_recycler_view);
 
         //populate arraylist with class data
-        receiptArrayList = myApplication.getReceiptArrayList();
+        receiptArrayList = MyApplication.getReceiptArrayList();
 
         Log.d(TAG, "onCreate: " + receiptArrayList.toString());
 //        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();

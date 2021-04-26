@@ -1,6 +1,7 @@
-package com.example.splittr;
+package com.example.splittr.receiptobjects;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ReceiptContainer {
 
@@ -39,7 +40,7 @@ public class ReceiptContainer {
         sample_container.createReceipt();
         sample_container.createReceipt();
         sample_container.createReceipt();
-        System.out.println(String.format("Number of receipts: %d", sample_container.getReceiptCount()));
+        System.out.println(String.format(Locale.US, "Number of receipts: %d", sample_container.getReceiptCount()));
 
         Receipt sample_receipt = new Receipt(3, "Today's McDeez");
         sample_receipt.addItem(new Item("Cheeseburger", 1.50, true));

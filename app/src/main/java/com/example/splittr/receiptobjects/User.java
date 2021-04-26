@@ -1,4 +1,4 @@
-package com.example.splittr;
+package com.example.splittr.receiptobjects;
 
 public class User {
     private int id;
