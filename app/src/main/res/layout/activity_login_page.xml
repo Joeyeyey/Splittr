@@ -8,6 +8,38 @@
     android:background="@drawable/login_background"
     >
 
+    <EditText
+        android:id="@+id/loginpassword"
+        android:layout_width="250dp"
+        android:layout_height="35dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/lock_icon"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingLeft="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.602" />
+
+    <TextView
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account? Register here"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.766" />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
@@ -17,8 +49,27 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.162"
+        app:layout_constraintVertical_bias="0.183"
         app:srcCompat="@drawable/logo_no_words" />
+
+    <EditText
+        android:id="@+id/loginemail"
+        android:layout_width="250dp"
+        android:layout_height="35dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/mail_icon"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.512" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -31,58 +82,7 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.537" />
-
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Don't have an account? Register here"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.71" />
-
-    <EditText
-        android:id="@+id/loginemail"
-        android:layout_width="250dp"
-        android:layout_height="35dp"
-        android:ems="10"
-        android:hint="Email"
-        android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/mail_icon"
-        android:paddingLeft="5dp"
-        android:drawablePadding="5dp"
-
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.444" />
-
-    <EditText
-        android:id="@+id/loginpassword"
-        android:layout_width="250dp"
-        android:layout_height="35dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:background="@drawable/rounded_button"
-        android:drawableLeft="@drawable/lock_icon"
-        android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.539"
-        android:paddingLeft="5dp"
-        android:drawablePadding="5dp"/>
+        app:layout_constraintVertical_bias="0.595" />
 
     <Button
         android:id="@+id/signIn"
@@ -92,14 +92,14 @@
         android:text="Login"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="15dp"
         app:backgroundTint="@color/lightred"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.64" />
+        app:layout_constraintVertical_bias="0.701" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
