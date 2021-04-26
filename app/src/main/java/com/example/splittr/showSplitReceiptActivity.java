@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +23,8 @@ public class showSplitReceiptActivity extends AppCompatActivity {
     HashMap<String, Double> map = new HashMap<String, Double>();
     Button btn_split_another_receipt;
     Button btn_send_sms_reminder;
-    TextView tv_show_split_receipt;
+    ListView lv_show_final_amount;
+    ArrayList<String> totalAmounts = new ArrayList<>();
     double taxRate;
     double tipRate;
 
@@ -37,8 +41,8 @@ public class showSplitReceiptActivity extends AppCompatActivity {
         receiptArrayList = myApplication.getReceiptArrayList();
 
         btn_split_another_receipt = findViewById(R.id.btn_split_another_receipt);
-        btn_send_sms_reminder = findViewById(R.id.btn_send_reminder);
-        tv_show_split_receipt = findViewById(R.id.tv_show_split_receipt);
+//        btn_send_sms_reminder = findViewById(R.id.btn_send_reminder);
+        lv_show_final_amount = findViewById(R.id.lv_show_final_amounts);
 
         btn_split_another_receipt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +64,16 @@ public class showSplitReceiptActivity extends AppCompatActivity {
             }
         }
 
-        String combined;
-
         for (String name : map.keySet()){
-            tv_show_split_receipt.setText(name + ": $" + map.get(name) + "\n");
+           totalAmounts.add((name + ": $" + String.format("%.2f", map.get(name))).toString());
+           System.out.println(totalAmounts);
             System.out.println(name + ": $" + map.get(name));
         }
+
         map.clear();
+
+        ArrayAdapter listAdapter = new ArrayAdapter(showSplitReceiptActivity.this, R.layout.lv_final_amount_layout, totalAmounts);
+        lv_show_final_amount.setAdapter(listAdapter);
+
     }
 }
