@@ -4,8 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".AddEditOne">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/et_item"
@@ -16,7 +28,7 @@
             android:ems="10"
             android:hint="Item"
             android:inputType="textPersonName"
-            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
             android:textColorHint="#99568EA3"
             android:textColor="@color/darkblue"
             android:textSize="20dp"
@@ -36,7 +48,7 @@
             android:ems="10"
             android:hint="Cost"
             android:inputType="textPersonName"
-            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
             android:textColor="@color/darkblue"
             android:textColorHint="#99568EA3"
             android:textSize="20dp"
@@ -51,7 +63,7 @@
             android:layout_width="250dp"
             android:layout_height="35dp"
             android:textSize="20dp"
-            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/white"
             android:ems="10"
