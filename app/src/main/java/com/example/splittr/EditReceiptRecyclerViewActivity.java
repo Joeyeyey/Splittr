@@ -38,7 +38,6 @@ public class EditReceiptRecyclerViewActivity extends AppCompatActivity {
         receiptArrayList = myApplication.getReceiptArrayList();
 
         Log.d(TAG, "onCreate: " + receiptArrayList.toString());
-        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
 
         btn_addOne = findViewById(R.id.btn_addOne);
 

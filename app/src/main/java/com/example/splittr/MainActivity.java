@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openReceiptActivity() {
-        Intent intent = new Intent(this, receiptActivity.class);
+        Intent intent = new Intent(this, EditReceiptRecyclerViewActivity.class);
         startActivity(intent);
     }
 
