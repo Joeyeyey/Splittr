@@ -114,7 +114,9 @@ public class MainActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 //        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);    // FOR PRIVATE
-        File storageDir = Environment.getExternalStorageDirectory();    // PUBLIC
+//        File storageDir = Environment.getExternalStorageDirectory();    // PUBLIC
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES); // the holy function
+
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",  /* suffix */
