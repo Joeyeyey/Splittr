@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Requesting permission on runtime
         String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
         ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_WRITE_PERM);
 //        if (!hasPermissions(this, PERMISSIONS)) {
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
-        Toast.makeText(this, currentPhotoPath, Toast.LENGTH_SHORT).show();
+        Log.d("D/createImageFile", currentPhotoPath);
         return image;
     }
 
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Toast.makeText(this, "failed to create file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "failed to create file, check storage permissions?", Toast.LENGTH_SHORT).show();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
-        Log.d("galleryAdd", "Adding Image");
+        Log.d("D/galleryAddPic", "Adding Image");
     }
 
     private static boolean hasPermissions(Context context, String... permissions) {
@@ -153,9 +154,10 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_WRITE_PERM: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
-                    Log.d("permissionsRequest", "Write perm granted");
+                    Log.d("D/onRequestPermissionsResult", "Write perm granted");
                 } else {
                     Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
+                    Log.d("D/onRequestPermissionsResult", "Write perm denied");
                 }
             }
         }
