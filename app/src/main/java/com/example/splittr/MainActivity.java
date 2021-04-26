@@ -9,9 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -21,12 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Requesting permission on runtime
         String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
         ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_WRITE_PERM);
 //        if (!hasPermissions(this, PERMISSIONS)) {
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 //        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);    // FOR PRIVATE
-//        File storageDir = Environment.getExternalStorageDirectory();    // PUBLIC
+//        File storageDir = Environment.getExternalStorageDirectory();    // FOR PUBLIC, DEPRECATED
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES); // the holy function
 
         File image = File.createTempFile(
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
-        Toast.makeText(this, currentPhotoPath, Toast.LENGTH_SHORT).show();
+        Log.d("D/createImageFile", currentPhotoPath);
         return image;
     }
 
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Toast.makeText(this, "failed to create file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "failed to create file, check storage permissions?", Toast.LENGTH_SHORT).show();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
-        Log.d("galleryAdd", "Adding Image");
+        Log.d("D/galleryAddPic", "Adding Image");
     }
 
     private static boolean hasPermissions(Context context, String... permissions) {
@@ -179,9 +180,10 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_WRITE_PERM: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
-                    Log.d("permissionsRequest", "Write perm granted");
+                    Log.d("D/onRequestPermissionsResult", "Write perm granted");
                 } else {
                     Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
+                    Log.d("D/onRequestPermissionsResult", "Write perm denied");
                 }
             }
         }
