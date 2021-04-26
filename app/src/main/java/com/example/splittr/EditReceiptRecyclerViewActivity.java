@@ -79,7 +79,7 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(EditReceiptRecyclerViewActivity.this, showSplitReceiptActivity.class);
+                Intent intent = new Intent(EditReceiptRecyclerViewActivity.this, GetTaxAndTipActivity.class);
                 startActivity(intent);
             }
         });

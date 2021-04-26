@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Splittr">
-        <activity android:name=".showSplitReceiptActivity"></activity>
+        <activity android:name=".GetTaxAndTipActivity"></activity>
+        <activity android:name=".showSplitReceiptActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".RegisterUser" />
         <activity android:name=".MainReceiptActivity" />
