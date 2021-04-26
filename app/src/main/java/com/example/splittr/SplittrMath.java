@@ -1,5 +1,9 @@
 package com.example.splittr;
 
+import com.example.splittr.receiptobjects.Item;
+import com.example.splittr.receiptobjects.Receipt;
+import com.example.splittr.receiptobjects.User;
+
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.math.BigDecimal;

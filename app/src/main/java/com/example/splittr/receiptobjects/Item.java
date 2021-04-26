@@ -1,4 +1,4 @@
-package com.example.splittr;
+package com.example.splittr.receiptobjects;
 
 import java.util.List;
 import java.util.ArrayList;

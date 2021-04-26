@@ -8,18 +8,20 @@
         android:required="true" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="replace" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="replace" /> <!-- for legacy -->
 
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" />
         </intent>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+        </intent>
     </queries>
-
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApplication"
@@ -30,24 +32,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Splittr">
+        <activity android:name=".GetTaxAndTipActivity"/>
+        <activity android:name=".showSplitReceiptActivity" />
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".AddEditOne"/>
         <activity android:name=".EditReceiptRecyclerViewActivity"/>
-        <activity android:name=".ProfileActivity"/>
         <activity android:name=".RegisterUser" />
-        <activity android:name=".MainReceiptActivity" />
-        <activity android:name=".selectedImageActivity"/>
-        <activity android:name=".LoginSystemActivity"/>
+        <activity android:name=".selectedImageActivity" />
+        <activity android:name=".LoginSystemActivity" />
+        <activity android:name=".ReceiptEditActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".homeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ReceiptEditActivity" />
-        <activity android:name=".MainActivity" />
-        <activity
-            android:name=".receiptActivity"
-            android:theme="@style/Theme.Splittr_title" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

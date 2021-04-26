@@ -1,4 +1,4 @@
-package com.example.splittr;
+package com.example.splittr.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,11 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.splittr.R;
+import com.example.splittr.ReceiptEditActivity;
+import com.example.splittr.receiptobjects.Receipt;
+
 import java.util.List;
 
-public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewAdapter.ViewHolder> {
+public class ReceiptViewAdapter extends RecyclerView.Adapter<ReceiptViewAdapter.ViewHolder> {
 
-    private List<Item> values;
+    private List<Receipt> values;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,11 +35,11 @@ public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewAdapter.ViewHo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ItemViewAdapter(List<Item> myDataset) {
+    public ReceiptViewAdapter(List<Receipt> myDataset) {
         values = myDataset;
     }
 
-    public void add(int position, Item item) {
+    public void add(int position, Receipt item) {
         values.add(position, item);
         notifyItemInserted(position);
     }
@@ -60,9 +64,9 @@ public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final Item item = values.get(position);
-        holder.txtHeader.setText(item.getName());
-        holder.txtFooter.setText(item.getCost().toString());
+        final Receipt receipt = values.get(position);
+        holder.txtHeader.setText(receipt.getLabel());
+        holder.txtFooter.setText(receipt.getCreationTime().toString());
         holder.txtHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
