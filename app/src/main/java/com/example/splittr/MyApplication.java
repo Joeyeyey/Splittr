@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MyApplication extends Application {
 
-    private static List<ReceiptComponents> receiptArrayList = new ArrayList<ReceiptComponents>();
+    private static List<ReceiptComponents> receiptArrayList = new ArrayList<>();
     //keep track of next item in list
     private static int nextId = receiptArrayList.size() + 1;
 
@@ -35,7 +35,6 @@ public class MyApplication extends Application {
 //        ReceiptComponents p15 = new ReceiptComponents(15,"Cart", 50.39, "None");
 //        ReceiptComponents p16 = new ReceiptComponents(16,"Bag", 50.39, "None");
 //        ReceiptComponents p17 = new ReceiptComponents(17,"Pants", 50.39, "None");
-
 
         receiptArrayList.add(p0);
         receiptArrayList.add(p1);
