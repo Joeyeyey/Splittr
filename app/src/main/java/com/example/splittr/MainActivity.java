@@ -23,11 +23,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -44,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
     private Button signout;
 
     String currentPhotoPath;
-    String encodedString = null;
+
+    // Instantiate the RequestQueue.
+    RequestQueue requestQueue;
+    String url ="https://tesseract.joeyeyey.dev/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 //            Log.d("Permissions", "App has permissions");
 //        }
 
+        requestQueue = Volley.newRequestQueue(this); // INSTANTIATE REQUEST QUEUE
 
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
         takePhotoButton.setOnClickListener(v -> {
@@ -110,8 +128,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic();  //Not working to add but refreshes media store
         } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
-            encodeBase64Image(data.getData());
+            String encodedImage, tesseractResult = null;
 
+            encodedImage = encodeBase64Image(data.getData());
+            tesseractResult = postTesseract(encodedImage);
         }
     }
 
@@ -168,8 +188,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d("D/galleryAddPic", "Adding Image");
     }
 
-    private void encodeBase64Image(Uri photoUri) {
+    private String encodeBase64Image(Uri photoUri) {
         Bitmap imageBitmap = null;
+        String encodedString = null;
         // Grab bitmap from Uri
         try {
             imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
@@ -178,17 +199,96 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             Log.d("D/encodeBase64Image", "Failed to grab bitmap");
         }
-//        selectedView.setImageBitmap(imageBitmap); // TEMPORARY TEST
 
+        // Initialize baos
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] myByteArray = baos.toByteArray();
 
-        encodedString = Base64.encodeToString(myByteArray, Base64.DEFAULT);
-        Log.d("D/encodeBase64Image", "Encoded Output: " + encodedString);
+        // Encode image
+        encodedString = Base64.encodeToString(myByteArray, Base64.NO_WRAP);   // NO_WRAP for no new lines
+        Log.d("D/encodeBase64Image", "Encoded String Length: " + encodedString.length());
+
+        // Decode test
+//        byte[] decodedString = Base64.decode(encodedString, Base64.DEFAULT);
+//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        Log.d("D/encodeBase64Image", "Image decoded");
+//        selectedView.setImageBitmap(decodedByte); // TEMPORARY TEST
+
+        return encodedString;
     }
 
+    private String getTesseract() {
+        String requestResponse = null;
 
+        // Request a string response from the provided URL.
+        Log.d("D/getTesseract Request", url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        Toast.makeText(MainActivity.this, response.substring(0, 20), Toast.LENGTH_LONG).show();
+                        Log.d("D/getTesseract stringRequest Response", response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "That didn't work!", Toast.LENGTH_LONG).show();
+                Log.d("D/getTesseract stringRequest Error", "Volley error on response");
+            }
+        });
+
+        requestQueue.add(stringRequest);
+        requestResponse = stringRequest.toString();
+        Log.d("D/getTesseract String Response", requestResponse);
+        return requestResponse;
+    }
+
+    private String postTesseract(String encodedString) {
+        String requestResponse = null;
+
+        // Request a string response from the provided URL.
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("data", encodedString);
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
+
+        final String requestBody = jsonBody.toString();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> Log.i("VOLLEY", response),
+                error -> Log.e("VOLLEY", error.toString())) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
+                    // can get more details such as response.headers
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
+        requestQueue.add(stringRequest);
+
+        requestResponse = stringRequest.toString();
+        Log.d("D/postTesseract String Response", requestResponse);
+        return requestResponse;
+    }
 
     private static boolean hasPermissions(Context context, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {

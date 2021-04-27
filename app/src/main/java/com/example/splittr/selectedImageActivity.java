@@ -12,6 +12,7 @@ import java.io.File;
 
 public class selectedImageActivity extends AppCompatActivity {
 
+//  CURRENTLY NOT USED
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
