@@ -30,10 +30,9 @@
         android:layout_marginBottom="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.357"
+        app:layout_constraintVertical_bias="0.32999998"
         app:srcCompat="@drawable/logo_wname" />
 
     <Button
@@ -41,7 +40,6 @@
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="471dp"
         android:background="@drawable/rounded_corner_dark_red"
         android:text="@string/get_started"
         android:textAllCaps="false"
@@ -53,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintTop_toBottomOf="@+id/image_logo_home"
+        app:layout_constraintVertical_bias="0.32999998" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

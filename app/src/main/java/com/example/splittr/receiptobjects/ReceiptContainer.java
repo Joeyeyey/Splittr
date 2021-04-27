@@ -72,9 +72,9 @@ public class ReceiptContainer extends Application {
 
         Receipt sample_receipt = new Receipt(3, "Today's McDeez");
         sample_receipt.addItem(new Item(0, "Cheeseburger", 1.50, true));
-        sample_receipt.addItem(new Item(0, "20pc McNuggets", 5.00, true));
-        sample_receipt.addItem(new Item(0, "Quarter-Pounder Deluxe", 6.29, true));
-        sample_receipt.addItem(new Item(0, "Large Drink", 1.00, true));
+        sample_receipt.addItem(new Item(1, "20pc McNuggets", 5.00, true));
+        sample_receipt.addItem(new Item(2, "Quarter-Pounder Deluxe", 6.29, true));
+        sample_receipt.addItem(new Item(3, "Large Drink", 1.00, true));
         sample_receipt.printItems();
     }
 }

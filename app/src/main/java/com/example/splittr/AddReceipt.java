@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.splittr.receiptobjects.Receipt;
-import com.example.splittr.receiptobjects.ReceiptContainer;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,15 +27,15 @@ public class AddReceipt extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_item);
+        setContentView(R.layout.activity_add_receipt);
 
-        receiptArrayList = myApplication.getReceiptContainer().getReceipts();
+        receiptArrayList = SplittrApplication.getReceiptContainer().getReceipts();
 
         //link variable to button/enterText
         btn_ok = findViewById(R.id.btn_ok);
         btn_cancel = findViewById(R.id.btn_cancel);
         et_label = findViewById(R.id.et_label);
-        et_date = findViewById(R.id.et_date);
+        et_date = findViewById(R.id.et_cost);
 
         Intent intent = getIntent();
         //if id > -1, treat form as edit mode.
@@ -71,15 +70,15 @@ public class AddReceipt extends AppCompatActivity {
                     else{
                         //add new list component
                         // create arraylist object
-                        int nextId = myApplication.getNextReceiptId();
+                        int nextId = SplittrApplication.getNextReceiptId();
                         Receipt receipt = new Receipt(nextId, et_label.getText().toString(), et_date.getText().toString());
 
                         //adds object to global list of items
                         receiptArrayList.add(receipt);
-                        myApplication.setNextReceiptId(nextId++);
+                        SplittrApplication.setNextReceiptId(nextId++);
                     }
                     //go back to main activity
-                    Intent intent = new Intent(AddReceipt.this, ItemEditRecyclerViewActivity.class);
+                    Intent intent = new Intent(AddReceipt.this, ReceiptSelectRecyclerViewActivity.class);
                     startActivity(intent);
                 }
                 else{
@@ -92,7 +91,7 @@ public class AddReceipt extends AppCompatActivity {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddReceipt.this, ItemEditRecyclerViewActivity.class);
+                Intent intent = new Intent(AddReceipt.this, ReceiptSelectRecyclerViewActivity.class);
                 startActivity(intent);
             }
         });

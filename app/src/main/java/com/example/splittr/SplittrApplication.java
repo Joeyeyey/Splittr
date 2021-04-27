@@ -14,6 +14,8 @@ public class SplittrApplication extends Application {
     private static Receipt selectedReceipt;
     private static int nextItemId;
 
+    private static SplittrMath splitter;
+
     public SplittrApplication() {
         SplittrApplication.receiptContainer = new ReceiptContainer(0, "null");
         SplittrApplication.nextReceiptId = receiptContainer.getReceiptCount() + 1;
@@ -37,7 +39,7 @@ public class SplittrApplication extends Application {
         return receiptContainer;
     }
 
-    public static void setReceiptArrayList(ReceiptContainer receiptContainer) {
+    public static void setReceiptContainer(ReceiptContainer receiptContainer) {
         SplittrApplication.receiptContainer = receiptContainer;
     }
 
@@ -49,10 +51,6 @@ public class SplittrApplication extends Application {
         SplittrApplication.nextReceiptId = nextReceiptId;
     }
 
-    public static void setReceiptContainer(ReceiptContainer receiptContainer) {
-        SplittrApplication.receiptContainer = receiptContainer;
-    }
-
     public static Receipt getSelectedReceipt() {
         return selectedReceipt;
     }
@@ -60,6 +58,7 @@ public class SplittrApplication extends Application {
     public static void setSelectedReceipt(Receipt selectedReceipt) {
         SplittrApplication.selectedReceipt = selectedReceipt;
         SplittrApplication.nextItemId = selectedReceipt.getItems().size() + 1;
+        SplittrApplication.splitter = new SplittrMath(selectedReceipt);
     }
 
     public static int getNextItemId() {
@@ -68,5 +67,21 @@ public class SplittrApplication extends Application {
 
     public static void setNextItemId(int nextItemId) {
         SplittrApplication.nextItemId = nextItemId;
+    }
+
+    public static SplittrMath getSplitter() {
+        return splitter;
+    }
+
+    public static void recalculateReceiptIds() {
+        for (int i = 0; i < receiptContainer.getReceipts().size(); i++) {
+            receiptContainer.getReceipts().get(i).setId(i);
+        }
+    }
+
+    public static void recalculateItemIds() {
+        for (int i = 0; i < selectedReceipt.getItems().size(); i++) {
+            selectedReceipt.getItems().get(i).setId(i);
+        }
     }
 }

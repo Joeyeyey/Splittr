@@ -55,8 +55,6 @@ public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdap
             @Override
             public void onClick(View view) {
 
-
-
                 //change recyclerview item colors
                 notifyItemChanged(selectedPos);
                 selectedPos = position;

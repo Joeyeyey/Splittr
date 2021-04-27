@@ -32,10 +32,10 @@
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.685"
+        app:layout_constraintHorizontal_bias="0.662"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.767" />
+        app:layout_constraintVertical_bias="0.684" />
 
     <Button
         android:id="@+id/btn_cancel_to_receipt_editor"
@@ -48,10 +48,10 @@
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.317"
+        app:layout_constraintHorizontal_bias="0.297"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.767" />
+        app:layout_constraintVertical_bias="0.684" />
 
     <EditText
         android:id="@+id/et_taxRate"
@@ -60,8 +60,9 @@
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/white"
         android:ems="10"
-        android:hint="Tax Rate (decimal)"
-        android:inputType="textPersonName"
+        android:hint="Tax Rate"
+        android:inputType="number"
+        android:digits="1234567890%.,"
         android:paddingStart="15dp"
         android:textColor="@color/darkblue"
         android:textColorHint="#99568EA3"
@@ -70,8 +71,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.551" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_tipRate"
@@ -80,8 +80,9 @@
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/white"
         android:ems="10"
-        android:hint="Tip Rate (decimal)"
-        android:inputType="textPersonName"
+        android:hint="Tip Percentage"
+        android:inputType="number"
+        android:digits="1234567890%.,"
         android:paddingStart="15dp"
         android:textColor="@color/darkblue"
         android:textColorHint="#99568EA3"
@@ -91,7 +92,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.628" />
+        app:layout_constraintVertical_bias="0.576" />
 
     <TextView
         android:id="@+id/tv_1"
@@ -106,21 +107,6 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.321" />
-
-    <TextView
-        android:id="@+id/tv_2"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Ex: Enter 15% as 0.15"
-        android:textAlignment="center"
-        android:textColor="@color/darkred"
-        android:textSize="17dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_1"
-        app:layout_constraintVertical_bias="0.027" />
+        app:layout_constraintVertical_bias="0.386" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

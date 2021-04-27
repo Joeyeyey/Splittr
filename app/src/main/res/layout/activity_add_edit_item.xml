@@ -40,14 +40,14 @@
             app:layout_constraintVertical_bias="0.373" />
 
         <EditText
-            android:id="@+id/et_date"
+            android:id="@+id/et_cost"
             android:layout_width="250dp"
             android:layout_height="35dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/white"
             android:ems="10"
             android:hint="Cost"
-            android:inputType="textPersonName"
+            android:inputType="numberDecimal"
             android:paddingStart="15dp"
             android:textColor="@color/darkblue"
             android:textColorHint="#99568EA3"
