@@ -14,19 +14,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.splittr.adapters.ItemEditAdapter;
+import com.example.splittr.receiptobjects.Item;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ItemEditRecyclerViewActivity extends AppCompatActivity {
 
-    private static final String TAG = "Item Recycler View";
+    private static final String TAG = "ItemRecyclerView";
     ImageButton btn_addOne;
     Button btn_split_receipt;
     double taxRate = 0.085;
     double tipPercent = 0.15;
 
     //declare arraylist
-    List<ReceiptComponents> receiptArrayList;
+    ArrayList<Item> itemArrayList;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -38,9 +39,9 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_item_recycler_view);
 
         //populate arraylist with class data
-        receiptArrayList = ReceiptItemsApplication.getReceiptArrayList();
+        itemArrayList = SplittrApplication.getSelectedReceipt().getItems();
 
-        Log.d(TAG, "onCreate: " + receiptArrayList.toString());
+        Log.d(TAG, "onCreate: " + itemArrayList.toString());
 //        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(this, "Arraylist size = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
 
@@ -51,7 +52,7 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
         btn_addOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ItemEditRecyclerViewActivity.this, AddEditOne.class);
+                Intent intent = new Intent(ItemEditRecyclerViewActivity.this, AddEditItem.class);
                 startActivity(intent);
             }
         });
@@ -64,7 +65,7 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //specify adapter
-        mAdapter = new ItemEditAdapter(receiptArrayList, ItemEditRecyclerViewActivity.this);
+        mAdapter = new ItemEditAdapter(itemArrayList, ItemEditRecyclerViewActivity.this);
         recyclerView.setAdapter(mAdapter);
 
         //attach ItemTouchHelper to RecyclerView
@@ -90,7 +91,7 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            receiptArrayList.remove(viewHolder.getAdapterPosition());
+            itemArrayList.remove(viewHolder.getAdapterPosition());
             mAdapter.notifyDataSetChanged();
         }
     };

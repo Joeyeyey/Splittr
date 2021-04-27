@@ -23,14 +23,14 @@ public class AddReceipt extends AppCompatActivity {
     EditText et_date;
     int id;
 
-    ReceiptContainer myApplication = (ReceiptContainer) this.getApplication();
+    SplittrApplication myApplication = (SplittrApplication) this.getApplication();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_item);
 
-        receiptArrayList = myApplication.getReceipts();
+        receiptArrayList = myApplication.getReceiptContainer().getReceipts();
 
         //link variable to button/enterText
         btn_ok = findViewById(R.id.btn_ok);
@@ -71,12 +71,12 @@ public class AddReceipt extends AppCompatActivity {
                     else{
                         //add new list component
                         // create arraylist object
-                        int nextId = myApplication.getNextId();
+                        int nextId = myApplication.getNextReceiptId();
                         Receipt receipt = new Receipt(nextId, et_label.getText().toString(), et_date.getText().toString());
 
                         //adds object to global list of items
                         receiptArrayList.add(receipt);
-                        myApplication.setNextId(nextId++);
+                        myApplication.setNextReceiptId(nextId++);
                     }
                     //go back to main activity
                     Intent intent = new Intent(AddReceipt.this, ItemEditRecyclerViewActivity.class);

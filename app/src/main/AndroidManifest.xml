@@ -47,7 +47,7 @@
         <activity android:name=".AddReceipt"/>
         <activity android:name=".ReceiptSelectRecyclerViewActivity"/>
 
-        <activity android:name=".AddEditOne"/>
+        <activity android:name=".AddEditItem"/>
         <activity android:name=".ItemEditRecyclerViewActivity"/>
 
         <activity android:name=".GetTaxAndTipActivity"/>

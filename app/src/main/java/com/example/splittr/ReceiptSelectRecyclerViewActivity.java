@@ -49,7 +49,7 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
         btn_addOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ReceiptSelectRecyclerViewActivity.this, AddEditOne.class);
+                Intent intent = new Intent(ReceiptSelectRecyclerViewActivity.this, AddEditItem.class);
                 startActivity(intent);
             }
         });

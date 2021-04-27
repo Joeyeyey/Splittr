@@ -71,10 +71,10 @@ public class ReceiptContainer extends Application {
         System.out.println(String.format(Locale.US, "Number of receipts: %d", sample_container.getReceiptCount()));
 
         Receipt sample_receipt = new Receipt(3, "Today's McDeez");
-        sample_receipt.addItem(new Item("Cheeseburger", 1.50, true));
-        sample_receipt.addItem(new Item("20pc McNuggets", 5.00, true));
-        sample_receipt.addItem(new Item("Quarter-Pounder Deluxe", 6.29, true));
-        sample_receipt.addItem(new Item("Large Drink", 1.00, true));
+        sample_receipt.addItem(new Item(0, "Cheeseburger", 1.50, true));
+        sample_receipt.addItem(new Item(0, "20pc McNuggets", 5.00, true));
+        sample_receipt.addItem(new Item(0, "Quarter-Pounder Deluxe", 6.29, true));
+        sample_receipt.addItem(new Item(0, "Large Drink", 1.00, true));
         sample_receipt.printItems();
     }
 }
