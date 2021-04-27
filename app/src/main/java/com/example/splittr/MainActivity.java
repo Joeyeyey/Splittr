@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     // Instantiate the RequestQueue.
     RequestQueue requestQueue;
     String url ="https://tesseract.joeyeyey.dev/json";
-    TextView resultTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 //            Log.d("Permissions", "App has permissions");
 //        }
 
-        resultTextView = findViewById(R.id.responseTV);
         requestQueue = Volley.newRequestQueue(this); // INSTANTIATE REQUEST QUEUE
 
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
@@ -136,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             SplittrApplication.globalPostResponse = "empty";
             encodedImage = encodeBase64Image(data.getData());
 
-            tesseractResult = experimentPost(encodedImage);
+            tesseractResult = postTesseract(encodedImage);
             Log.d("POST FINAL",  SplittrApplication.globalPostResponse);
         }
     }
@@ -245,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         return requestResponse;
     }
 
-    private String postTesseract(String encodedString) {
+    private String deprecatedPost(String encodedString) {
         String requestResponse = null;
 
         // Request a string response from the provided URL.
@@ -293,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
         return requestResponse;
     }
 
-    private String experimentPost(String encodedString) {
+    private String postTesseract(String encodedString) {
         String requestResponse = null;
 
         JSONObject params = new JSONObject();
@@ -317,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                resultTextView.setText("Error getting response");
+                Log.e("POST ERROR", "Error sending post request");
             }
         });
         requestQueue.add(jsonObjectRequest);
