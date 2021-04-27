@@ -85,9 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, LoginSystemActivity.class));
             }
         });
-
-
-
     }
 
     public void openImageGallery() {
@@ -125,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
-        Toast.makeText(this, currentPhotoPath, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, currentPhotoPath, Toast.LENGTH_SHORT).show();
         return image;
     }
 
@@ -141,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Toast.makeText(this, "failed to create file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to Create File", Toast.LENGTH_SHORT).show();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {

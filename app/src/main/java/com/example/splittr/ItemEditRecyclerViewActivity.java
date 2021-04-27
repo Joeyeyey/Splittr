@@ -48,15 +48,6 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
         btn_addOne = findViewById(R.id.btn_addOne);
         btn_split_receipt = findViewById(R.id.btn_split_receipt);
 
-        //set onclick action for add button
-        btn_addOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ItemEditRecyclerViewActivity.this, AddEditItem.class);
-                startActivity(intent);
-            }
-        });
-
         recyclerView = findViewById(R.id.lv_recyclerview);
         recyclerView.setHasFixedSize(true);
 
@@ -71,6 +62,15 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
         //attach ItemTouchHelper to RecyclerView
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
+        //set onclick action for add button
+        btn_addOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ItemEditRecyclerViewActivity.this, AddEditItem.class);
+                startActivity(intent);
+            }
+        });
+
         btn_split_receipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +79,8 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
     }
 
@@ -92,8 +94,16 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             itemArrayList.remove(viewHolder.getAdapterPosition());
+            SplittrApplication.recalculateItemIds();
             mAdapter.notifyDataSetChanged();
         }
     };
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this, ReceiptSelectRecyclerViewActivity.class);
+        startActivity(intent);
+    }
 
 }

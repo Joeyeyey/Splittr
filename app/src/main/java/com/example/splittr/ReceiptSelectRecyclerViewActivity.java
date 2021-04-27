@@ -29,15 +29,13 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    SplittrApplication myApplication = (SplittrApplication) this.getApplication();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_receipt_recycler_view);
 
         //populate arraylist with class data
-        receiptArrayList = myApplication.getReceiptContainer().getReceipts();
+        receiptArrayList = SplittrApplication.getReceiptContainer().getReceipts();
 
         Log.d(TAG, "onCreate: " + receiptArrayList.toString());
 //        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
@@ -49,7 +47,7 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
         btn_addOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ReceiptSelectRecyclerViewActivity.this, AddEditItem.class);
+                Intent intent = new Intent(ReceiptSelectRecyclerViewActivity.this, AddReceipt.class);
                 startActivity(intent);
             }
         });
@@ -80,8 +78,16 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             receiptArrayList.remove(viewHolder.getAdapterPosition());
+            SplittrApplication.recalculateReceiptIds();
             mAdapter.notifyDataSetChanged();
         }
     };
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
 }

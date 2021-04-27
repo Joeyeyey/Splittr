@@ -32,26 +32,31 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Splittr">
-        <activity android:name=".MainActivity" />
+
         <activity android:name=".StartupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
 
         <activity android:name=".LoginSystemActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".RegisterUser" />
 
         <activity android:name=".AddReceipt"/>
-        <activity android:name=".ReceiptSelectRecyclerViewActivity"/>
+        <activity android:name=".ReceiptSelectRecyclerViewActivity"
+            android:parentActivityName=".MainActivity" />
 
         <activity android:name=".AddEditItem"/>
-        <activity android:name=".ItemEditRecyclerViewActivity"/>
+        <activity android:name=".ItemEditRecyclerViewActivity"
+            android:parentActivityName=".ReceiptSelectRecyclerViewActivity" />
 
-        <activity android:name=".GetTaxAndTipActivity"/>
-        <activity android:name=".showSplitReceiptActivity" />
+        <activity android:name=".GetTaxAndTipActivity"
+            android:parentActivityName=".ItemEditRecyclerViewActivity" />
+        <activity android:name=".SplitResultsActivity"
+            android:parentActivityName=".GetTaxAndTipActivity" />
 
         <activity android:name=".selectedImageActivity" />
 

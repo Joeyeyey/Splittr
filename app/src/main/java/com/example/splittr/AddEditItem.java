@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.splittr.receiptobjects.Item;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,8 +20,6 @@ public class AddEditItem extends AppCompatActivity {
     ArrayList<Item> itemArrayList;
     EditText et_item, et_cost, et_person;
     int id;
-
-    ReceiptItemsApplication myReceiptItemsApplication = (ReceiptItemsApplication) this.getApplication();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +32,7 @@ public class AddEditItem extends AppCompatActivity {
         btn_ok = findViewById(R.id.btn_ok);
         btn_cancel = findViewById(R.id.btn_cancel);
         et_item = findViewById(R.id.et_label);
-        et_cost = findViewById(R.id.et_date);
+        et_cost = findViewById(R.id.et_cost);
         et_person = findViewById(R.id.et_person);
 
         Intent intent = getIntent();
@@ -53,7 +50,7 @@ public class AddEditItem extends AppCompatActivity {
             }
             et_item.setText(itemObject.getName());
             et_cost.setText(String.valueOf(itemObject.getCost()));
-            et_person.setText(itemObject.getOwners().toString());
+            et_person.setText(String.join(", ",  itemObject.getOwners()));
         }
         else{
             //add new list component

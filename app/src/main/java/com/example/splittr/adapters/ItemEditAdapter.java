@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.splittr.AddEditItem;
 import com.example.splittr.R;
-import com.example.splittr.ReceiptComponents;
 import com.example.splittr.receiptobjects.Item;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tv_item.setText(itemArrayList.get(position).getName());
         holder.tv_cost.setText(String.valueOf(itemArrayList.get(position).getCost()));
-        holder.tv_person.setText(itemArrayList.get(position).getOwners().toString());
+        holder.tv_person.setText(String.join(", ",  itemArrayList.get(position).getOwners()));
         holder.itemView.setSelected(selectedPos == position);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
