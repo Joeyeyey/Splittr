@@ -35,7 +35,7 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_receipt_recycler_view);
+        setContentView(R.layout.activity_edit_item_recycler_view);
 
         //populate arraylist with class data
         receiptArrayList = ReceiptItemsApplication.getReceiptArrayList();

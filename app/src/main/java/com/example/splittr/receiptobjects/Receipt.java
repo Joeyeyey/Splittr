@@ -38,8 +38,12 @@ public class Receipt {
         this.label = label;
     }
 
-    public LocalDateTime getCreationTime() {
+    public LocalDateTime getCreationDateTime() {
         return creation_time;
+    }
+
+    public String getCreationDate(DateTimeFormatter formatting) {
+        return creation_time.toLocalDate().format(formatting);
     }
 
     public ArrayList<Item> getItems() {
