@@ -5,8 +5,18 @@ import android.app.Application;
 import com.example.splittr.receiptobjects.Item;
 import com.example.splittr.receiptobjects.Receipt;
 import com.example.splittr.receiptobjects.ReceiptContainer;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class SplittrApplication extends Application {
 
@@ -86,6 +96,21 @@ public class SplittrApplication extends Application {
     public static void recalculateItemIds() {
         for (int i = 0; i < selectedReceipt.getItems().size(); i++) {
             selectedReceipt.getItems().get(i).setId(i);
+        }
+    }
+
+    public static void addReceiptFromJson() {
+        try {
+            Receipt newReceipt = receiptContainer.createReceipt("New Receipt");
+            JSONArray itemdata = globalJSONObj.getJSONArray("data");
+            for (int i = 0; i < itemdata.length(); i++) {
+                JSONObject item = itemdata.getJSONObject(i);
+                newReceipt.addItem(new Item(i, (String)item.get("label"), Double.parseDouble((String)item.get("cost")), false));
+            }
+            recalculateReceiptIds();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

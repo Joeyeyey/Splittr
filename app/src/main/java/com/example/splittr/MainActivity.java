@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,6 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +46,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 //        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);    // FOR PRIVATE
 //        File storageDir = Environment.getExternalStorageDirectory();    // FOR PUBLIC, DEPRECATED
@@ -301,15 +304,16 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         // Enter the correct url for your api service site
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         SplittrApplication.globalPostResponse = response.toString();
-//                        SplittrApplication.globalJSONObj = response;
+                        SplittrApplication.globalJSONObj = response;
                         Log.d("POST RESPONSE",  SplittrApplication.globalPostResponse);
-
+                        SplittrApplication.addReceiptFromJson();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -317,6 +321,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("POST ERROR", "Error sending post request");
             }
         });
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                3,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         requestQueue.add(jsonObjectRequest);
 
         return SplittrApplication.globalPostResponse;
