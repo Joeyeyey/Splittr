@@ -1,26 +1,38 @@
 package com.example.splittr.receiptobjects;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Receipt {
 
     private int id;
     private String label;
-    private LocalDateTime creation_time;
+    private LocalDate creation_time;
     private ArrayList<Item> items;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     public Receipt(int id, String label) {
         this.id = id;
         this.label = label;
-        this.creation_time = LocalDateTime.now();
+        this.creation_time = LocalDate.now();
+        this.items = new ArrayList<>();
+    }
+
+    public Receipt(int id, String label, String formattedDate) {
+        this.id = id;
+        this.label = label;
+        this.creation_time = LocalDate.parse(formattedDate, formatter);
         this.items = new ArrayList<>();
     }
 
     public int getId() {
         return id;
     }
+
+    public void setId(int id) { this.id = id; }
 
     public String getLabel() {
         return label;
@@ -30,8 +42,12 @@ public class Receipt {
         this.label = label;
     }
 
-    public LocalDateTime getCreationTime() {
+    public LocalDate getCreationDateTime() {
         return creation_time;
+    }
+
+    public String getCreationDate(DateTimeFormatter formatting) {
+        return creation_time.format(formatting);
     }
 
     public ArrayList<Item> getItems() {

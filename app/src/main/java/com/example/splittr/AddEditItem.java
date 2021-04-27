@@ -9,28 +9,29 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.List;
+import com.example.splittr.receiptobjects.Item;
 
-public class AddEditOne extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class AddEditItem extends AppCompatActivity {
 
     Button btn_ok, btn_cancel;
-    List<ReceiptComponents> receiptArrayList;
+    ArrayList<Item> itemArrayList;
     EditText et_item, et_cost, et_person;
     int id;
-
-    MyApplication myApplication = (MyApplication) this.getApplication();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_one);
+        setContentView(R.layout.activity_add_edit_item);
 
-        receiptArrayList = myApplication.getReceiptArrayList();
+        itemArrayList = SplittrApplication.getSelectedReceipt().getItems();
 
         //link variable to button/enterText
         btn_ok = findViewById(R.id.btn_ok);
         btn_cancel = findViewById(R.id.btn_cancel);
-        et_item = findViewById(R.id.et_item);
+        et_item = findViewById(R.id.et_label);
         et_cost = findViewById(R.id.et_cost);
         et_person = findViewById(R.id.et_person);
 
@@ -38,18 +39,18 @@ public class AddEditOne extends AppCompatActivity {
         //if id > -1, treat form as edit mode.
         //if id < -1, treat form as new component mode
         id = intent.getIntExtra("id", -1);
-        ReceiptComponents receiptComponentsObject = null;
+        Item itemObject = null;
 
         if(id >= 0){
             //edit list component
-            for (ReceiptComponents rc: receiptArrayList) {
-                if(rc.getId() == id){
-                    receiptComponentsObject = rc;
+            for (Item item: itemArrayList) {
+                if(item.getId() == id){
+                    itemObject = item;
                 }
             }
-            et_item.setText(receiptComponentsObject.getItem());
-            et_cost.setText(String.valueOf(receiptComponentsObject.getCost()));
-            et_person.setText(receiptComponentsObject.getPerson());
+            et_item.setText(itemObject.getName());
+            et_cost.setText(String.valueOf(itemObject.getCost()));
+            et_person.setText(String.join(", ",  itemObject.getOwners()));
         }
         else{
             //add new list component
@@ -61,25 +62,26 @@ public class AddEditOne extends AppCompatActivity {
                 if(!(et_item.getText().toString().equals("")) && !(et_cost.getText().toString().equals("")) && !(et_person.getText().toString().equals(""))){
                     if (id >= 0){
                         //update existing list component
-                        ReceiptComponents updatedReceiptComponent = new ReceiptComponents(id, et_item.getText().toString(), Double.parseDouble(et_cost.getText().toString()), et_person.getText().toString());
-                        receiptArrayList.set(id, updatedReceiptComponent);
+
+                        Item updatedItem = new Item(id, et_item.getText().toString(), Double.parseDouble(et_cost.getText().toString()), false, new ArrayList<>(Arrays.asList(et_person.getText().toString().split("\\s*,\\s*"))));
+                        itemArrayList.set(id, updatedItem);
                     }
                     else{
                         //add new list component
                         // create arraylist object
-                        int nextId = myApplication.getNextId();
-                        ReceiptComponents newReceiptComponent = new ReceiptComponents(nextId, et_item.getText().toString(), Double.parseDouble(et_cost.getText().toString()), et_person.getText().toString());
+                        int nextId = SplittrApplication.getNextItemId();
+                        Item updatedItem = new Item(nextId, et_item.getText().toString(), Double.parseDouble(et_cost.getText().toString()), false, new ArrayList<>(Arrays.asList(et_person.getText().toString().split("\\s*,\\s*"))));
 
                         //adds object to global list of items
-                        receiptArrayList.add(newReceiptComponent);
-                        myApplication.setNextId(nextId++);
+                        itemArrayList.add(updatedItem);
+                        SplittrApplication.setNextItemId(nextId++);
                     }
                     //go back to main activity
-                    Intent intent = new Intent(com.example.splittr.AddEditOne.this, EditReceiptRecyclerViewActivity.class);
+                    Intent intent = new Intent(AddEditItem.this, ItemEditRecyclerViewActivity.class);
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(com.example.splittr.AddEditOne.this, "Please complete all text fields.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddEditItem.this, "Please complete all text fields.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -88,7 +90,7 @@ public class AddEditOne extends AppCompatActivity {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(com.example.splittr.AddEditOne.this, EditReceiptRecyclerViewActivity.class);
+                Intent intent = new Intent(AddEditItem.this, ItemEditRecyclerViewActivity.class);
                 startActivity(intent);
             }
         });

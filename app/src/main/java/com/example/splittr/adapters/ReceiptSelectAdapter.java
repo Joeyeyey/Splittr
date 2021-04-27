@@ -2,6 +2,7 @@ package com.example.splittr.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.splittr.AddEditOne;
+import com.example.splittr.SplittrApplication;
+import com.example.splittr.ItemEditRecyclerViewActivity;
 import com.example.splittr.R;
-import com.example.splittr.ReceiptComponents;
+import com.example.splittr.receiptobjects.Receipt;
 
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder> {
+public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdapter.MyViewHolder> {
 
-    List<ReceiptComponents> receiptArrayList;
-    Context context;
+    private static final String TAG = "ReceiptSelectAdapter";
+
+    public ArrayList<Receipt> receiptArrayList;
+    public Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
 
-    public RecycleViewAdapter(List<ReceiptComponents> receiptArrayList, Context context) {
+    public ReceiptSelectAdapter(ArrayList<Receipt> receiptArrayList, Context context) {
         this.receiptArrayList = receiptArrayList;
         this.context = context;
     }
@@ -40,9 +45,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tv_item.setText(receiptArrayList.get(position).getItem());
-        holder.tv_cost.setText(String.valueOf(receiptArrayList.get(position).getCost()));
-        holder.tv_person.setText(receiptArrayList.get(position).getPerson());
+        Log.d(TAG, "onBindViewerHolder(" + holder.toString() + ", " + position + ")");
+        holder.tv_receiptLabel.setText(receiptArrayList.get(position).getLabel());
+        holder.tv_receiptDate.setText(String.valueOf(receiptArrayList.get(position).getCreationDate(DateTimeFormatter.ISO_LOCAL_DATE)));
+
         holder.itemView.setSelected(selectedPos == position);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -52,10 +58,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 //change recyclerview item colors
                 notifyItemChanged(selectedPos);
                 selectedPos = position;
+                Log.d(TAG, "onClick: selectedPos = " + selectedPos);
                 notifyItemChanged(selectedPos);
 
+                SplittrApplication.setSelectedReceipt(SplittrApplication.getReceiptContainer().getReceipt(selectedPos));
+
                 //send control to AddEditOne activity
-                Intent intent = new Intent(context, AddEditOne.class);
+                Intent intent = new Intent(context, ItemEditRecyclerViewActivity.class);
                 intent.putExtra("id", receiptArrayList.get(position).getId());
                 context.startActivity(intent);
             }
@@ -68,17 +77,15 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView tv_item;
-        TextView tv_cost;
-        TextView tv_person;
+        TextView tv_receiptLabel;
+        TextView tv_receiptDate;
         ConstraintLayout parentLayout;
 
         //implement textviews
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_item = itemView.findViewById(R.id.tv_item);
-            tv_cost = itemView.findViewById(R.id.tv_cost);
-            tv_person = itemView.findViewById(R.id.tv_person);
+            tv_receiptLabel = itemView.findViewById(R.id.tv_receiptName);
+            tv_receiptDate = itemView.findViewById(R.id.tv_receiptDate);
             parentLayout = itemView.findViewById(R.id.oneLineReceiptLayout);
 
         }

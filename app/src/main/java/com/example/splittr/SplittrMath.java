@@ -2,51 +2,57 @@ package com.example.splittr;
 
 import com.example.splittr.receiptobjects.Item;
 import com.example.splittr.receiptobjects.Receipt;
-import com.example.splittr.receiptobjects.User;
 
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class SplittrMath {
 
-    private static final BigDecimal taxRate = BigDecimal.valueOf(0.08375);
     private static final int roundingMethod = BigDecimal.ROUND_HALF_UP;
+    private static BigDecimal taxRate = BigDecimal.valueOf(0.08375);
 
-    private Receipt currentReceipt = null;
-    private final Hashtable<User, BigDecimal> userSubtotals = new Hashtable<>();
-    private final Hashtable<User, BigDecimal> userAdditionals = new Hashtable<>();
-    private final Hashtable<User, BigDecimal> userFinalTotals = new Hashtable<>();
+    private Receipt currentReceipt;
+    private Hashtable<String, BigDecimal> userSubtotals = new Hashtable<>();
+    private Hashtable<String, BigDecimal> userAdditionals = new Hashtable<>();
+    private Hashtable<String, BigDecimal> userFinalTotals = new Hashtable<>();
 
-    private BigDecimal weightedAdditional = BigDecimal.ZERO;
-    private BigDecimal unweightedAdditional = BigDecimal.ZERO;
+    private BigDecimal weightedAdditional;
+    private BigDecimal unweightedAdditional;
 
-    private boolean approximateTaxes = false;
-
-    public SplittrMath() { }
+    private boolean approximateTaxes;
 
     public SplittrMath(Receipt receipt) {
         this.currentReceipt = receipt;
+        this.weightedAdditional = BigDecimal.ZERO;
+        this.unweightedAdditional = BigDecimal.ZERO;
+        this.approximateTaxes = false;
     }
 
     public SplittrMath(Receipt receipt, double weightedAdditional, boolean approximateTax) {
         this.currentReceipt = receipt;
         this.weightedAdditional = BigDecimal.valueOf(weightedAdditional);
+        this.unweightedAdditional = BigDecimal.ZERO;
         this.approximateTaxes = approximateTax;
         this.processReceiptOwes();
+    }
+
+    public BigDecimal setTaxRate(double percentage) {
+        taxRate = BigDecimal.valueOf(percentage).divide(BigDecimal.valueOf(100), roundingMethod);
+        return taxRate;
     }
 
     public void processReceiptOwes() {
         userSubtotals.clear();
         for (Item item : currentReceipt.getItems()) {
-            BigDecimal splitCost = item.getCost().divide(BigDecimal.valueOf(item.ownerCount()), roundingMethod);
-            for (User user : item.getOwners()) {
-                addToSubtotal(user, splitCost);
+            if (item.ownerCount() > 0) {
+                BigDecimal splitCost = item.getCost().divide(BigDecimal.valueOf(item.ownerCount()), roundingMethod);
+                for (String user : item.getOwners()) {
+                    addToSubtotal(user, splitCost);
+                }
+                if (approximateTaxes)
+                    this.processTax(item);
             }
-            if (approximateTaxes)
-                this.processTax(item);
         }
     }
 
@@ -54,7 +60,7 @@ public class SplittrMath {
         if (item.isTaxable()) {
             BigDecimal splitTax = getTaxedValue(item.getCost()).divide(BigDecimal.valueOf(item.ownerCount()), 10, roundingMethod);
             System.out.printf("Value of %s is $%.02f and taxed is $%.02f.\n", item.getName(), item.getCost(), getTaxedValue(item.getCost()));
-            for (User user : item.getOwners()) {
+            for (String user : item.getOwners()) {
                 addToAdditional(user, splitTax);
             }
         }
@@ -62,7 +68,7 @@ public class SplittrMath {
 
     private void processWeighted() {
         BigDecimal subtotal = getSubtotal();
-        for (User user : userSubtotals.keySet()) {
+        for (String user : userSubtotals.keySet()) {
             BigDecimal ratio = userSubtotals.get(user).divide(subtotal, 10, roundingMethod);
             addToAdditional(user, this.weightedAdditional.multiply(ratio));
         }
@@ -70,14 +76,15 @@ public class SplittrMath {
 
     private void processUnweighted() {
         BigDecimal subtotal = getSubtotal();
-        for (User user : userSubtotals.keySet()) {
+        for (String user : userSubtotals.keySet()) {
             addToAdditional(user, this.unweightedAdditional.divide(subtotal, 10, roundingMethod));
         }
     }
 
-    private void calculateFinal() {
+    public void calculateFinal() {
         processReceiptOwes();
-        for (User user : userSubtotals.keySet()) {
+        processWeighted();
+        for (String user : userSubtotals.keySet()) {
             userFinalTotals.put(user, userSubtotals.get(user).add(userAdditionals.getOrDefault(user, BigDecimal.ZERO)));
         }
     }
@@ -94,7 +101,7 @@ public class SplittrMath {
         return subtotal;
     }
 
-    private BigDecimal addToSubtotal(User user, BigDecimal amount) {
+    private BigDecimal addToSubtotal(String user, BigDecimal amount) {
         if (userSubtotals.containsKey(user)) {
             userSubtotals.replace(user, userSubtotals.get(user).add(amount));
         } else {
@@ -103,7 +110,7 @@ public class SplittrMath {
         return userSubtotals.get(user);
     }
 
-    private BigDecimal addToAdditional(User user, BigDecimal amount) {
+    private BigDecimal addToAdditional(String user, BigDecimal amount) {
         if (userAdditionals.containsKey(user)) {
             userAdditionals.replace(user, userAdditionals.get(user).add(amount));
         } else {
@@ -112,56 +119,56 @@ public class SplittrMath {
         return userAdditionals.get(user);
     }
 
-    public String getUserOwes(User user) {
-        NumberFormat localCurrencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
-        return localCurrencyFormat.format(userFinalTotals.getOrDefault(user, BigDecimal.ZERO).doubleValue());
+    public BigDecimal calculateSubtotalPercentage(double percentage) {
+        return getSubtotal().multiply(BigDecimal.valueOf(percentage).divide(BigDecimal.valueOf(100), roundingMethod));
     }
 
-    public void printOwes() {
-        System.out.println("===== USER SUBTOTALS =====");
-        BigDecimal subtotal = BigDecimal.ZERO;
-        for (User user : this.userSubtotals.keySet()) {
-            System.out.printf("%s owes $%.2f\n", user.getName(), userSubtotals.get(user));
-            subtotal = subtotal.add(userSubtotals.get(user));
-        }
-        System.out.printf("TOTAL VALUE: $%.2f\n", subtotal);
+    public void addWeightedTipPercentage(double percentage) {
+        BigDecimal tipAmount = calculateSubtotalPercentage(percentage);
+        addToWeighted(tipAmount);
+    }
 
-        System.out.println("===== USER ADDITIONAL (TAX/TIP) =====");
-        BigDecimal additionalSubtotal = BigDecimal.ZERO;
-        for (User user : this.userAdditionals.keySet()) {
-            System.out.printf("%s owes $%.2f\n", user.getName(), userAdditionals.get(user));
-            additionalSubtotal = additionalSubtotal.add(userAdditionals.get(user));
-        }
-        System.out.printf("TOTAL VALUE: $%.2f\n", additionalSubtotal);
+    public BigDecimal addToWeighted(BigDecimal amount) {
+        weightedAdditional = weightedAdditional.add(amount);
+        return weightedAdditional;
+    }
 
-        System.out.println("===== USER FINAL TOTAL =====");
-        BigDecimal finalTotal = BigDecimal.ZERO;
-        for (User user : this.userFinalTotals.keySet()) {
-            System.out.printf("%s owes %s\n", user.getName(), getUserOwes(user));
-            finalTotal = finalTotal.add(userFinalTotals.get(user));
-        }
-        System.out.printf("TOTAL VALUE: $%.2f\n", finalTotal);
+    public BigDecimal addToUnweighted(BigDecimal amount) {
+        unweightedAdditional = unweightedAdditional.add(amount);
+        return unweightedAdditional;
+    }
+
+    public Hashtable<String, BigDecimal> getUserSubtotals() {
+        return userSubtotals;
+    }
+
+    public Hashtable<String, BigDecimal> getUserAdditionals() {
+        return userAdditionals;
+    }
+
+    public Hashtable<String, BigDecimal> getUserFinalTotals() {
+        return userFinalTotals;
     }
 
     public static void main(String[] args) {
         Receipt testReceipt = new Receipt(0, "YUXIANG 6/6");
 
-        User user1 = new User("Jonathan");
-        User user2 = new User("Tiffany");
-        User user3 = new User("Vicki");
-        User user4 = new User("Candace");
-        User user5 = new User("Solina");
-        User user6 = new User("Michael");
+        String user1 = new String("Jonathan");
+        String user2 = new String("Tiffany");
+        String user3 = new String("Vicki");
+        String user4 = new String("Candace");
+        String user5 = new String("Solina");
+        String user6 = new String("Michael");
 
-        Item food1 = new Item("Jjajangmyeon", 8.00, true);
-        Item food2 = new Item("Jjajangmyeon", 8.00, true);
-        Item food3 = new Item("Jjajangmyeon", 8.00, true);
-        Item food4 = new Item("Tangsuyuk", 16.00, true);
-        Item food5 = new Item("Homemade Deep Fried Dumplings", 7.50, true);
-        Item food6 = new Item("Homemade Deep Fried Dumplings", 7.50, true);
-        Item food7 = new Item("Jjajangmyeon", 8.00, true);
-        Item food8 = new Item("Salt Pepper Squid", 9.95, true);
-        Item food9 = new Item("Chicken Wings", 8.50, true);
+        Item food1 = new Item(0, "Jjajangmyeon", 8.00, true);
+        Item food2 = new Item(1, "Jjajangmyeon", 8.00, true);
+        Item food3 = new Item(2, "Jjajangmyeon", 8.00, true);
+        Item food4 = new Item(3, "Tangsuyuk", 16.00, true);
+        Item food5 = new Item(4, "Homemade Deep Fried Dumplings", 7.50, true);
+        Item food6 = new Item(5, "Homemade Deep Fried Dumplings", 7.50, true);
+        Item food7 = new Item(6, "Jjajangmyeon", 8.00, true);
+        Item food8 = new Item(7, "Salt Pepper Squid", 9.95, true);
+        Item food9 = new Item(8, "Chicken Wings", 8.50, true);
 
         food1.addOwner(user2);
         food2.addOwner(user5);
@@ -177,6 +184,5 @@ public class SplittrMath {
 
         SplittrMath mather = new SplittrMath(testReceipt, 24.62, false);
         mather.calculateFinal();
-        mather.printOwes();
     }
 }
