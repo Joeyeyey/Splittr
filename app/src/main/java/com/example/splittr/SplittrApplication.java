@@ -9,19 +9,23 @@ import com.example.splittr.receiptobjects.ReceiptContainer;
 public class SplittrApplication  extends Application {
 
     private static ReceiptContainer receiptContainer;
-    private static int nextId = receiptContainer.getReceiptCount() + 1;
+    private static int nextReceiptId;
+
+    private static Receipt selectedReceipt;
+    private static int nextItemId;
 
     public SplittrApplication() {
-        this.receiptContainer = new ReceiptContainer(0, "null");
-        this.testFill();
+        SplittrApplication.receiptContainer = new ReceiptContainer(0, "null");
+        SplittrApplication.nextReceiptId = receiptContainer.getReceiptCount() + 1;
+        SplittrApplication.testFill();
     }
 
-    public void testFill() {
+    public static void testFill() {
         Receipt receipt1 = receiptContainer.createReceipt("Receipt 1");
-        this.receiptContainer.createReceipt("Receipt 2");
-        this.receiptContainer.createReceipt("Receipt 3");
-        this.receiptContainer.createReceipt("Receipt 4");
-        this.receiptContainer.createReceipt("Receipt 5");
+        receiptContainer.createReceipt("Receipt 2");
+        receiptContainer.createReceipt("Receipt 3");
+        receiptContainer.createReceipt("Receipt 4");
+        receiptContainer.createReceipt("Receipt 5");
 
         receipt1.addItem(new Item("Cheeseburger", 1.50, true));
         receipt1.addItem(new Item("20pc McNuggets", 5.00, true));
@@ -37,11 +41,11 @@ public class SplittrApplication  extends Application {
         SplittrApplication.receiptContainer = receiptContainer;
     }
 
-    public static int getNextId() {
-        return nextId;
+    public static int getNextReceiptId() {
+        return nextReceiptId;
     }
 
-    public static void setNextId(int nextId) {
-        SplittrApplication.nextId = nextId;
+    public static void setNextReceiptId(int nextReceiptId) {
+        SplittrApplication.nextReceiptId = nextReceiptId;
     }
 }

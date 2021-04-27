@@ -8,14 +8,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class homeActivity extends AppCompatActivity {
+public class StartupActivity extends AppCompatActivity {
     private Button startButton;
     private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_starting);
 
         startButton = (Button) findViewById(R.id.button_start);
         startButton.setOnClickListener(v -> {
@@ -44,7 +44,7 @@ public class homeActivity extends AppCompatActivity {
     }
 
     public void openMainActivity() {
-        Intent intent = new Intent(this, LoginSystemActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 

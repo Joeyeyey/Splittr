@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:textSize="25dp"
     android:textAlignment="center"
-    android:textColor="@color/darkblue"
-    >
+    android:textColor="@color/darkblue">
 
 </TextView>

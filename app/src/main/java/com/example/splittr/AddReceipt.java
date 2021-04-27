@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.splittr.receiptobjects.Receipt;
 import com.example.splittr.receiptobjects.ReceiptContainer;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class AddReceipt extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class AddReceipt extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_one);
+        setContentView(R.layout.activity_add_edit_item);
 
         receiptArrayList = myApplication.getReceipts();
 
@@ -51,7 +52,7 @@ public class AddReceipt extends AppCompatActivity {
                 }
             }
             et_label.setText(receiptObject.getLabel());
-            et_date.setText(String.valueOf(receiptObject.getCreationTime()));
+            et_date.setText(String.valueOf(receiptObject.getCreationDate(DateTimeFormatter.ISO_LOCAL_DATE)));
         }
         else{
             //add new list component

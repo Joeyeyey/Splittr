@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:scaleType="centerInside"
     android:orientation="vertical"
-    tools:context=".homeActivity">
+    tools:context=".StartupActivity">
 
     <ImageView
         android:layout_width="wrap_content"

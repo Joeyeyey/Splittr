@@ -2,6 +2,7 @@ package com.example.splittr.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,12 @@ import com.example.splittr.AddEditOne;
 import com.example.splittr.R;
 import com.example.splittr.receiptobjects.Receipt;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdapter.MyViewHolder> {
+
+    private static final String TAG = "ReceiptSelectAdapter";
 
     ArrayList<Receipt> receiptArrayList;
     Context context;
@@ -33,15 +37,16 @@ public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdap
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         //associate layout with holder
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_receipt, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewerHolder(" + holder.toString() + ", " + position + ")");
         holder.tv_receiptLabel.setText(receiptArrayList.get(position).getLabel());
-        holder.tv_receiptDate.setText(String.valueOf(receiptArrayList.get(position).getCreationTime()));
+        holder.tv_receiptDate.setText(String.valueOf(receiptArrayList.get(position).getCreationDate(DateTimeFormatter.ISO_LOCAL_DATE)));
 
         holder.itemView.setSelected(selectedPos == position);
 

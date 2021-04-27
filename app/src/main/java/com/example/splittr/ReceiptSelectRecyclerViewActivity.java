@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.splittr.adapters.ReceiptSelectAdapter;
 import com.example.splittr.receiptobjects.Receipt;
-import com.example.splittr.receiptobjects.ReceiptContainer;
 
 import java.util.ArrayList;
 
@@ -30,15 +29,15 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    ReceiptContainer myApplication = (ReceiptContainer) this.getApplication();
+    SplittrApplication myApplication = (SplittrApplication) this.getApplication();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_receipt_recycler_view);
+        setContentView(R.layout.activity_select_receipt_recycler_view);
 
         //populate arraylist with class data
-        receiptArrayList = myApplication.getReceipts();
+        receiptArrayList = myApplication.getReceiptContainer().getReceipts();
 
         Log.d(TAG, "onCreate: " + receiptArrayList.toString());
 //        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
