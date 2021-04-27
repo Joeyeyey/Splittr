@@ -13,26 +13,20 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.splittr.adapters.RecycleViewAdapter;
+import com.example.splittr.adapters.ItemEditAdapter;
 
-import java.util.HashMap;
 import java.util.List;
 
-public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity {
+public class ItemEditRecyclerViewActivity extends AppCompatActivity {
 
-    private static final String TAG = "Receipt Recycler View";
+    private static final String TAG = "Item Recycler View";
     ImageButton btn_addOne;
     Button btn_split_receipt;
     double taxRate = 0.085;
     double tipPercent = 0.15;
 
-    MyApplication myApplication = (MyApplication) this.getApplication();
-
     //declare arraylist
     List<ReceiptComponents> receiptArrayList;
-
-    //declare hashmap
-    HashMap<String, Double> map = new HashMap<String, Double>();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -44,7 +38,7 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
         setContentView(R.layout.edit_receipt_recycler_view);
 
         //populate arraylist with class data
-        receiptArrayList = MyApplication.getReceiptArrayList();
+        receiptArrayList = ReceiptItemsApplication.getReceiptArrayList();
 
         Log.d(TAG, "onCreate: " + receiptArrayList.toString());
 //        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
@@ -57,7 +51,7 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
         btn_addOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(com.example.splittr.EditReceiptRecyclerViewActivity.this, AddEditOne.class);
+                Intent intent = new Intent(ItemEditRecyclerViewActivity.this, AddEditOne.class);
                 startActivity(intent);
             }
         });
@@ -70,7 +64,7 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
         recyclerView.setLayoutManager(layoutManager);
 
         //specify adapter
-        mAdapter = new RecycleViewAdapter(receiptArrayList, com.example.splittr.EditReceiptRecyclerViewActivity.this);
+        mAdapter = new ItemEditAdapter(receiptArrayList, ItemEditRecyclerViewActivity.this);
         recyclerView.setAdapter(mAdapter);
 
         //attach ItemTouchHelper to RecyclerView
@@ -80,7 +74,7 @@ public class EditReceiptRecyclerViewActivity<foreach> extends AppCompatActivity 
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(EditReceiptRecyclerViewActivity.this, GetTaxAndTipActivity.class);
+                Intent intent = new Intent(ItemEditRecyclerViewActivity.this, GetTaxAndTipActivity.class);
                 startActivity(intent);
             }
         });

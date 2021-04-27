@@ -69,7 +69,7 @@ public class GetTaxAndTipActivity extends AppCompatActivity {
         btn_cancel_to_receipt_editor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GetTaxAndTipActivity.this, EditReceiptRecyclerViewActivity.class);
+                Intent intent = new Intent(GetTaxAndTipActivity.this, ItemEditRecyclerViewActivity.class);
                 startActivity(intent);
             }
         });

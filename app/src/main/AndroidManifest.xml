@@ -24,7 +24,7 @@
     </queries>
 
     <application
-        android:name=".MyApplication"
+        android:name=".SplittrApplication"
         android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -32,15 +32,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Splittr">
-        <activity android:name=".GetTaxAndTipActivity"/>
-        <activity android:name=".showSplitReceiptActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".AddEditOne"/>
-        <activity android:name=".EditReceiptRecyclerViewActivity"/>
-        <activity android:name=".RegisterUser" />
-        <activity android:name=".selectedImageActivity" />
-        <activity android:name=".LoginSystemActivity" />
-        <activity android:name=".ReceiptEditActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".homeActivity">
             <intent-filter>
@@ -48,6 +39,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".LoginSystemActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".RegisterUser" />
+
+        <activity android:name=".AddReceipt"/>
+        <activity android:name=".ReceiptSelectRecyclerViewActivity"/>
+
+        <activity android:name=".AddEditOne"/>
+        <activity android:name=".ItemEditRecyclerViewActivity"/>
+
+        <activity android:name=".GetTaxAndTipActivity"/>
+        <activity android:name=".showSplitReceiptActivity" />
+
+        <activity android:name=".selectedImageActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

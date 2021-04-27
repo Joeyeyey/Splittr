@@ -1,9 +1,11 @@
 package com.example.splittr.receiptobjects;
 
+import android.app.Application;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ReceiptContainer {
+public class ReceiptContainer extends Application {
 
     private int num_receipts;
     private String owner;
@@ -15,8 +17,14 @@ public class ReceiptContainer {
         this.receipts = new ArrayList<>();
     }
 
-    public void createReceipt() {
+    public Receipt createReceipt() {
         receipts.add(new Receipt(num_receipts++, "test label"));
+        return receipts.get(num_receipts - 1);
+    }
+
+    public Receipt createReceipt(String label) {
+        receipts.add(new Receipt(num_receipts++, label));
+        return receipts.get(num_receipts - 1);
     }
 
     public void deleteReceipt(int index) {
@@ -33,6 +41,26 @@ public class ReceiptContainer {
 
     public ArrayList<Receipt> getReceipts() {
         return receipts;
+    }
+
+    public void setReceipts(ArrayList<Receipt> n_receipts) {
+        receipts = n_receipts;
+    }
+
+    public Receipt getReceipt(int index) {
+        return receipts.get(index);
+    }
+
+    public void setReceipt(int index, Receipt receipt) {
+        receipts.set(index, receipt);
+    }
+
+    public int getNextId() {
+        return num_receipts;
+    }
+
+    public void setNextId(int nextId) {
+        num_receipts = nextId;
     }
 
     public static void main(String[] args) {
