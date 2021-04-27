@@ -38,11 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton takePhotoButton;
     private ImageButton photoGalleryButton;
     private ImageButton manageExistingButton;
-    private ImageView photoImage;
     private Button signout;
   
     String currentPhotoPath;
-    private Uri fileUri;
+    String imageEncodedBase64 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         //assign button to signout variable
         signout = (Button) findViewById(R.id.btn_signout);
 
-        //set onclick listner for button
+        //set onclick listener for button
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(MainActivity.this, LoginSystemActivity.class));
             }
+
         });
+
     }
 
     public void openImageGallery() {
@@ -104,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic();  //Not working to add but refreshes media store
+        } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
+            encodeBase64Image(data.getData());
         }
     }
 
@@ -160,6 +163,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d("D/galleryAddPic", "Adding Image");
     }
 
+    private void encodeBase64Image(Uri photoUri) {
+        Bitmap imageBM = null;
+        // Grab bitmap from Uri
+        try {
+            imageBM = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+            Log.d("D/selectPhoto", "Successfully grabbed bitmap");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("D/selectPhoto", "Failed to grab bitmap");
+        }
+
+        selectedView.setImageBitmap(imageBM); // TEST
+    }
+
     private static boolean hasPermissions(Context context, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
             for (String permission : permissions) {
@@ -174,15 +191,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_WRITE_PERM: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_WRITE_PERM) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
-                    Log.d("D/onRequestPermissionsResult", "Write perm granted");
-                } else {
-                    Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
-                    Log.d("D/onRequestPermissionsResult", "Write perm denied");
-                }
+                Log.d("D/onRequestPermissionsResult", "Write perm granted");
+            } else {
+                Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
+                Log.d("D/onRequestPermissionsResult", "Write perm denied");
             }
         }
     }
