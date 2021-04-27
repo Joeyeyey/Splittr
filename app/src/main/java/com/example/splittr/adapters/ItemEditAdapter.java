@@ -11,20 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.splittr.AddEditOne;
+import com.example.splittr.AddEditItem;
 import com.example.splittr.R;
 import com.example.splittr.ReceiptComponents;
+import com.example.splittr.receiptobjects.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyViewHolder> {
 
-    List<ReceiptComponents> receiptArrayList;
+    ArrayList<Item> itemArrayList;
     Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
 
-    public ItemEditAdapter(List<ReceiptComponents> receiptArrayList, Context context) {
-        this.receiptArrayList = receiptArrayList;
+    public ItemEditAdapter(ArrayList<Item> itemArrayList, Context context) {
+        this.itemArrayList = itemArrayList;
         this.context = context;
     }
 
@@ -40,9 +42,9 @@ public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tv_item.setText(receiptArrayList.get(position).getItem());
-        holder.tv_cost.setText(String.valueOf(receiptArrayList.get(position).getCost()));
-        holder.tv_person.setText(receiptArrayList.get(position).getPerson());
+        holder.tv_item.setText(itemArrayList.get(position).getName());
+        holder.tv_cost.setText(String.valueOf(itemArrayList.get(position).getCost()));
+        holder.tv_person.setText(itemArrayList.get(position).getOwners().toString());
         holder.itemView.setSelected(selectedPos == position);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -54,9 +56,9 @@ public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyView
                 selectedPos = position;
                 notifyItemChanged(selectedPos);
 
-                //send control to AddEditOne activity
-                Intent intent = new Intent(context, AddEditOne.class);
-                intent.putExtra("id", receiptArrayList.get(position).getId());
+                //send control to AddEditItem activity
+                Intent intent = new Intent(context, AddEditItem.class);
+                intent.putExtra("id", itemArrayList.get(position).getId());
                 context.startActivity(intent);
             }
         });
@@ -64,7 +66,7 @@ public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return receiptArrayList.size();
+        return itemArrayList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

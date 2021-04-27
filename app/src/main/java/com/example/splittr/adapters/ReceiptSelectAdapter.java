@@ -12,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.splittr.AddEditOne;
+import com.example.splittr.SplittrApplication;
+import com.example.splittr.ItemEditRecyclerViewActivity;
 import com.example.splittr.R;
 import com.example.splittr.receiptobjects.Receipt;
 
@@ -23,8 +24,8 @@ public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdap
 
     private static final String TAG = "ReceiptSelectAdapter";
 
-    ArrayList<Receipt> receiptArrayList;
-    Context context;
+    public ArrayList<Receipt> receiptArrayList;
+    public Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
 
     public ReceiptSelectAdapter(ArrayList<Receipt> receiptArrayList, Context context) {
@@ -54,13 +55,18 @@ public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdap
             @Override
             public void onClick(View view) {
 
+
+
                 //change recyclerview item colors
                 notifyItemChanged(selectedPos);
                 selectedPos = position;
+                Log.d(TAG, "onClick: selectedPos = " + selectedPos);
                 notifyItemChanged(selectedPos);
 
+                SplittrApplication.setSelectedReceipt(SplittrApplication.getReceiptContainer().getReceipt(selectedPos));
+
                 //send control to AddEditOne activity
-                Intent intent = new Intent(context, AddEditOne.class);
+                Intent intent = new Intent(context, ItemEditRecyclerViewActivity.class);
                 intent.putExtra("id", receiptArrayList.get(position).getId());
                 context.startActivity(intent);
             }
