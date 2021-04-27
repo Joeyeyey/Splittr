@@ -1,18 +1,17 @@
 package com.example.splittr;
 
 import android.app.Application;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyApplication extends Application {
+public class ReceiptItemsApplication extends Application {
 
     private static List<ReceiptComponents> receiptArrayList = new ArrayList<>();
     //keep track of next item in list
     private static int nextId = receiptArrayList.size() + 1;
 
-    public MyApplication() {
+    public ReceiptItemsApplication() {
         fillArrayList();
     }
 
@@ -62,7 +61,7 @@ public class MyApplication extends Application {
     }
 
     public static void setReceiptArrayList(List<ReceiptComponents> receiptArrayList) {
-        com.example.splittr.MyApplication.receiptArrayList = receiptArrayList;
+        ReceiptItemsApplication.receiptArrayList = receiptArrayList;
     }
 
     public static int getNextId() {
@@ -70,6 +69,6 @@ public class MyApplication extends Application {
     }
 
     public static void setNextId(int nextId) {
-        com.example.splittr.MyApplication.nextId = nextId;
+        ReceiptItemsApplication.nextId = nextId;
     }
 }

@@ -18,20 +18,20 @@ public class AddEditOne extends AppCompatActivity {
     EditText et_item, et_cost, et_person;
     int id;
 
-    MyApplication myApplication = (MyApplication) this.getApplication();
+    ReceiptItemsApplication myReceiptItemsApplication = (ReceiptItemsApplication) this.getApplication();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_one);
 
-        receiptArrayList = myApplication.getReceiptArrayList();
+        receiptArrayList = myReceiptItemsApplication.getReceiptArrayList();
 
         //link variable to button/enterText
         btn_ok = findViewById(R.id.btn_ok);
         btn_cancel = findViewById(R.id.btn_cancel);
-        et_item = findViewById(R.id.et_item);
-        et_cost = findViewById(R.id.et_cost);
+        et_item = findViewById(R.id.et_label);
+        et_cost = findViewById(R.id.et_date);
         et_person = findViewById(R.id.et_person);
 
         Intent intent = getIntent();
@@ -67,15 +67,15 @@ public class AddEditOne extends AppCompatActivity {
                     else{
                         //add new list component
                         // create arraylist object
-                        int nextId = myApplication.getNextId();
+                        int nextId = myReceiptItemsApplication.getNextId();
                         ReceiptComponents newReceiptComponent = new ReceiptComponents(nextId, et_item.getText().toString(), Double.parseDouble(et_cost.getText().toString()), et_person.getText().toString());
 
                         //adds object to global list of items
                         receiptArrayList.add(newReceiptComponent);
-                        myApplication.setNextId(nextId++);
+                        myReceiptItemsApplication.setNextId(nextId++);
                     }
                     //go back to main activity
-                    Intent intent = new Intent(com.example.splittr.AddEditOne.this, EditReceiptRecyclerViewActivity.class);
+                    Intent intent = new Intent(com.example.splittr.AddEditOne.this, ItemEditRecyclerViewActivity.class);
                     startActivity(intent);
                 }
                 else{
@@ -88,7 +88,7 @@ public class AddEditOne extends AppCompatActivity {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(com.example.splittr.AddEditOne.this, EditReceiptRecyclerViewActivity.class);
+                Intent intent = new Intent(com.example.splittr.AddEditOne.this, ItemEditRecyclerViewActivity.class);
                 startActivity(intent);
             }
         });

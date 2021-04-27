@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +16,7 @@ import java.util.List;
 public class showSplitReceiptActivity extends AppCompatActivity {
 
     List<ReceiptComponents> receiptArrayList;
-    MyApplication myApplication = (MyApplication) this.getApplication();
+    ReceiptItemsApplication myReceiptItemsApplication = (ReceiptItemsApplication) this.getApplication();
     HashMap<String, Double> map = new HashMap<String, Double>();
     Button btn_split_another_receipt;
     Button btn_send_sms_reminder;
@@ -38,7 +35,7 @@ public class showSplitReceiptActivity extends AppCompatActivity {
         double tipRate = intent.getDoubleExtra(GetTaxAndTipActivity.TIP_RATE, 0);
         System.out.println("rates: " + taxRate + "  " + tipRate);
 
-        receiptArrayList = myApplication.getReceiptArrayList();
+        receiptArrayList = myReceiptItemsApplication.getReceiptArrayList();
 
         btn_split_another_receipt = findViewById(R.id.btn_split_another_receipt);
 //        btn_send_sms_reminder = findViewById(R.id.btn_send_reminder);

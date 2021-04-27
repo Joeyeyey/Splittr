@@ -1,5 +1,6 @@
 package com.example.splittr.receiptobjects;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,13 @@ public class Receipt {
         this.id = id;
         this.label = label;
         this.creation_time = LocalDateTime.now();
+        this.items = new ArrayList<>();
+    }
+
+    public Receipt(int id, String label, String formattedDate) {
+        this.id = id;
+        this.label = label;
+        this.creation_time = LocalDateTime.parse(formattedDate, DateTimeFormatter.ISO_LOCAL_DATE);
         this.items = new ArrayList<>();
     }
 

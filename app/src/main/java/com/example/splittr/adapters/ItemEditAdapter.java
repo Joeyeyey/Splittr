@@ -17,13 +17,13 @@ import com.example.splittr.ReceiptComponents;
 
 import java.util.List;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder> {
+public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyViewHolder> {
 
     List<ReceiptComponents> receiptArrayList;
     Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
 
-    public RecycleViewAdapter(List<ReceiptComponents> receiptArrayList, Context context) {
+    public ItemEditAdapter(List<ReceiptComponents> receiptArrayList, Context context) {
         this.receiptArrayList = receiptArrayList;
         this.context = context;
     }
@@ -33,7 +33,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         //associate layout with holder
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_receipt, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_item, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
@@ -79,7 +79,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             tv_item = itemView.findViewById(R.id.tv_item);
             tv_cost = itemView.findViewById(R.id.tv_cost);
             tv_person = itemView.findViewById(R.id.tv_person);
-            parentLayout = itemView.findViewById(R.id.oneLineReceiptLayout);
+            parentLayout = itemView.findViewById(R.id.oneLineItemLayout);
 
         }
     }
