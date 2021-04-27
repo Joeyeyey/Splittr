@@ -15,7 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Instantiate the RequestQueue.
     RequestQueue requestQueue;
-    String url ="https://tesseract.joeyeyey.dev/";
+    String url ="https://tesseract.joeyeyey.dev/json";
+    TextView resultTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 //            Log.d("Permissions", "App has permissions");
 //        }
 
+        resultTextView = findViewById(R.id.responseTV);
         requestQueue = Volley.newRequestQueue(this); // INSTANTIATE REQUEST QUEUE
 
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
@@ -130,8 +133,11 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
             String encodedImage, tesseractResult = null;
 
+            SplittrApplication.globalPostResponse = "empty";
             encodedImage = encodeBase64Image(data.getData());
-            tesseractResult = postTesseract(encodedImage);
+
+            tesseractResult = experimentPost(encodedImage);
+            Log.d("POST FINAL",  SplittrApplication.globalPostResponse);
         }
     }
 
@@ -224,20 +230,14 @@ public class MainActivity extends AppCompatActivity {
         // Request a string response from the provided URL.
         Log.d("D/getTesseract Request", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        Toast.makeText(MainActivity.this, response.substring(0, 20), Toast.LENGTH_LONG).show();
-                        Log.d("D/getTesseract stringRequest Response", response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, "That didn't work!", Toast.LENGTH_LONG).show();
-                Log.d("D/getTesseract stringRequest Error", "Volley error on response");
-            }
-        });
+                response -> {
+                    // Display the first 500 characters of the response string.
+                    Toast.makeText(MainActivity.this, response.substring(0, 20), Toast.LENGTH_LONG).show();
+                    Log.d("D/getTesseract stringRequest Response", response);
+                }, error -> {
+                    Toast.makeText(MainActivity.this, "That didn't work!", Toast.LENGTH_LONG).show();
+                    Log.d("D/getTesseract stringRequest Error", "Volley error on response");
+                });
 
         requestQueue.add(stringRequest);
         requestResponse = stringRequest.toString();
@@ -258,8 +258,9 @@ public class MainActivity extends AppCompatActivity {
 
         final String requestBody = jsonBody.toString();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                response -> Log.i("VOLLEY", response),
-                error -> Log.e("VOLLEY", error.toString())) {
+                response -> {
+                    Log.d("postTesseract Response Code", response);
+                }, error -> Log.e("postTesseract Error", error.toString())) {
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
@@ -267,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    return requestBody.getBytes("utf-8");
                 } catch (UnsupportedEncodingException uee) {
                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
                     return null;
@@ -285,9 +286,43 @@ public class MainActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
 
+
+
         requestResponse = stringRequest.toString();
         Log.d("D/postTesseract String Response", requestResponse);
         return requestResponse;
+    }
+
+    private String experimentPost(String encodedString) {
+        String requestResponse = null;
+
+        JSONObject params = new JSONObject();
+        try {
+            //input your API parameters
+            params.put("data", encodedString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Enter the correct url for your api service site
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        SplittrApplication.globalPostResponse = response.toString();
+//                        SplittrApplication.globalJSONObj = response;
+                        Log.d("POST RESPONSE",  SplittrApplication.globalPostResponse);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                resultTextView.setText("Error getting response");
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+
+        return SplittrApplication.globalPostResponse;
     }
 
     private static boolean hasPermissions(Context context, String... permissions) {

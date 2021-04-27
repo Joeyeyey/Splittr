@@ -6,6 +6,8 @@ import com.example.splittr.receiptobjects.Item;
 import com.example.splittr.receiptobjects.Receipt;
 import com.example.splittr.receiptobjects.ReceiptContainer;
 
+import org.json.JSONObject;
+
 public class SplittrApplication extends Application {
 
     private static ReceiptContainer receiptContainer;
@@ -15,6 +17,8 @@ public class SplittrApplication extends Application {
     private static int nextItemId;
 
     private static SplittrMath splitter;
+    public static String globalPostResponse;
+    public static JSONObject globalJSONObj;
 
     public SplittrApplication() {
         SplittrApplication.receiptContainer = new ReceiptContainer(0, "null");
