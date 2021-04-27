@@ -4,16 +4,17 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,12 +22,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,11 +58,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton takePhotoButton;
     private ImageButton photoGalleryButton;
     private ImageButton manageExistingButton;
-    private ImageView photoImage;
     private Button signout;
-  
+
     String currentPhotoPath;
-    private Uri fileUri;
+
+    // Instantiate the RequestQueue.
+    RequestQueue requestQueue;
+    String url ="https://tesseract.joeyeyey.dev/json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
 //        } else {
 //            Log.d("Permissions", "App has permissions");
 //        }
+
+        requestQueue = Volley.newRequestQueue(this); // INSTANTIATE REQUEST QUEUE
 
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
         takePhotoButton.setOnClickListener(v -> {
@@ -76,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         //assign button to signout variable
         signout = (Button) findViewById(R.id.btn_signout);
 
-        //set onclick listner for button
+        //set onclick listener for button
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(MainActivity.this, LoginSystemActivity.class));
             }
+
         });
+
     }
 
     public void openImageGallery() {
@@ -104,12 +130,20 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic();  //Not working to add but refreshes media store
+        } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
+            String encodedImage, tesseractResult = null;
+
+            SplittrApplication.globalPostResponse = "empty";
+            encodedImage = encodeBase64Image(data.getData());
+
+            tesseractResult = postTesseract(encodedImage);
+            Log.d("POST FINAL",  SplittrApplication.globalPostResponse);
         }
     }
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 //        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);    // FOR PRIVATE
 //        File storageDir = Environment.getExternalStorageDirectory();    // FOR PUBLIC, DEPRECATED
@@ -160,6 +194,143 @@ public class MainActivity extends AppCompatActivity {
         Log.d("D/galleryAddPic", "Adding Image");
     }
 
+    private String encodeBase64Image(Uri photoUri) {
+        Bitmap imageBitmap = null;
+        String encodedString = null;
+        // Grab bitmap from Uri
+        try {
+            imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+            Log.d("D/encodeBase64Image", "Successfully grabbed bitmap");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("D/encodeBase64Image", "Failed to grab bitmap");
+        }
+
+        // Initialize baos
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] myByteArray = baos.toByteArray();
+
+        // Encode image
+        encodedString = Base64.encodeToString(myByteArray, Base64.NO_WRAP);   // NO_WRAP for no new lines
+        Log.d("D/encodeBase64Image", "Encoded String Length: " + encodedString.length());
+
+        // Decode test
+//        byte[] decodedString = Base64.decode(encodedString, Base64.DEFAULT);
+//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        Log.d("D/encodeBase64Image", "Image decoded");
+//        selectedView.setImageBitmap(decodedByte); // TEMPORARY TEST
+
+        return encodedString;
+    }
+
+    private String getTesseract() {
+        String requestResponse = null;
+
+        // Request a string response from the provided URL.
+        Log.d("D/getTesseract Request", url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    // Display the first 500 characters of the response string.
+                    Toast.makeText(MainActivity.this, response.substring(0, 20), Toast.LENGTH_LONG).show();
+                    Log.d("D/getTesseract stringRequest Response", response);
+                }, error -> {
+                    Toast.makeText(MainActivity.this, "That didn't work!", Toast.LENGTH_LONG).show();
+                    Log.d("D/getTesseract stringRequest Error", "Volley error on response");
+                });
+
+        requestQueue.add(stringRequest);
+        requestResponse = stringRequest.toString();
+        Log.d("D/getTesseract String Response", requestResponse);
+        return requestResponse;
+    }
+
+    private String deprecatedPost(String encodedString) {
+        String requestResponse = null;
+
+        // Request a string response from the provided URL.
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("data", encodedString);
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
+
+        final String requestBody = jsonBody.toString();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    Log.d("postTesseract Response Code", response);
+                }, error -> Log.e("postTesseract Error", error.toString())) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
+                    // can get more details such as response.headers
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
+        requestQueue.add(stringRequest);
+
+
+
+        requestResponse = stringRequest.toString();
+        Log.d("D/postTesseract String Response", requestResponse);
+        return requestResponse;
+    }
+
+    private String postTesseract(String encodedString) {
+        String requestResponse = null;
+
+        JSONObject params = new JSONObject();
+        try {
+            //input your API parameters
+            params.put("data", encodedString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        // Enter the correct url for your api service site
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        SplittrApplication.globalPostResponse = response.toString();
+                        SplittrApplication.globalJSONObj = response;
+                        Log.d("POST RESPONSE",  SplittrApplication.globalPostResponse);
+                        SplittrApplication.addReceiptFromJson();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("POST ERROR", "Error sending post request");
+            }
+        });
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                3,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        requestQueue.add(jsonObjectRequest);
+
+        return SplittrApplication.globalPostResponse;
+    }
+
     private static boolean hasPermissions(Context context, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
             for (String permission : permissions) {
@@ -174,15 +345,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_WRITE_PERM: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_WRITE_PERM) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
-                    Log.d("D/onRequestPermissionsResult", "Write perm granted");
-                } else {
-                    Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
-                    Log.d("D/onRequestPermissionsResult", "Write perm denied");
-                }
+                Log.d("D/onRequestPermissionsResult", "Write perm granted");
+            } else {
+                Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
+                Log.d("D/onRequestPermissionsResult", "Write perm denied");
             }
         }
     }

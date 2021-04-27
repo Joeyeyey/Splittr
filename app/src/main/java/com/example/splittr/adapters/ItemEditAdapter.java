@@ -15,6 +15,7 @@ import com.example.splittr.AddEditItem;
 import com.example.splittr.R;
 import com.example.splittr.receiptobjects.Item;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tv_item.setText(itemArrayList.get(position).getName());
-        holder.tv_cost.setText(String.valueOf(itemArrayList.get(position).getCost()));
+        holder.tv_cost.setText("$" + String.format("%.2f", itemArrayList.get(position).getCost()));
         holder.tv_person.setText(String.join(", ",  itemArrayList.get(position).getOwners()));
         holder.itemView.setSelected(selectedPos == position);
 
