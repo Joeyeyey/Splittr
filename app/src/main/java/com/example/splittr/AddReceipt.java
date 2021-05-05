@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class AddReceipt extends AppCompatActivity {
 
+    // initialize variables
     Button btn_ok, btn_cancel;
     ArrayList<Receipt> receiptArrayList;
     EditText et_label;

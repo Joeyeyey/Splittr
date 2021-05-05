@@ -19,10 +19,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-//initialize class
+// class for handling user profiles on the firebase database
 public class ProfileActivity extends AppCompatActivity {
 
-    //initialize variables
+    // initialize variables
     private FirebaseUser user;
     private DatabaseReference reference;
 
@@ -62,7 +62,6 @@ public class ProfileActivity extends AppCompatActivity {
                 //display user name on menu page
                 if(userProfile != null){
                     String fullName = userProfile.fullName;
-
                     nameTextView.setText("Welcome " + fullName);
                 }
             }

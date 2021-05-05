@@ -44,12 +44,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+// the main activity where users choose what they want to do in the app
 public class MainActivity extends AppCompatActivity {
 
+    // initialize variables
     private static final String TAG = "MainActivity";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_GALLERY = 2;
@@ -197,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String encodeBase64Image(Uri photoUri) {
         Bitmap imageBitmap = null;
-        String encodedString = null;
+        String encodedString;
         // Grab bitmap from Uri
         try {
             imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
@@ -226,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getTesseract() {
-        String requestResponse = null;
+        String requestResponse;
 
         // Request a string response from the provided URL.
         Log.d("D/getTesseract Request", url);
@@ -247,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String deprecatedPost(String encodedString) {
-        String requestResponse = null;
+        String requestResponse;
 
         // Request a string response from the provided URL.
         JSONObject jsonBody = new JSONObject();
@@ -267,13 +270,8 @@ public class MainActivity extends AppCompatActivity {
                 return "application/json; charset=utf-8";
             }
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
+            public byte[] getBody() {
+                return requestBody.getBytes(StandardCharsets.UTF_8);
             }
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {

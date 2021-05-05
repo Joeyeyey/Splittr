@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
 
+// activity for displaying the results of the receipt split to the user
 public class SplitResultsActivity extends AppCompatActivity {
 
     SplittrMath splitter = SplittrApplication.getSplitter();

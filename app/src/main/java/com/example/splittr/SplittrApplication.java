@@ -18,8 +18,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+// singleton class for variable storage/access and overall management of receipts throughout the app
 public class SplittrApplication extends Application {
 
+    // initialize variables
     private static ReceiptContainer receiptContainer;
     private static int nextReceiptId;
 
@@ -30,6 +32,7 @@ public class SplittrApplication extends Application {
     public static String globalPostResponse;
     public static JSONObject globalJSONObj;
 
+    // initial constructor
     public SplittrApplication() {
         SplittrApplication.receiptContainer = new ReceiptContainer(0, "null");
         SplittrApplication.nextReceiptId = receiptContainer.getReceiptCount() + 1;

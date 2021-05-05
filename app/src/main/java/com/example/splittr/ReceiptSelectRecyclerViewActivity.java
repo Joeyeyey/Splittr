@@ -17,6 +17,7 @@ import com.example.splittr.receiptobjects.Receipt;
 
 import java.util.ArrayList;
 
+// Activity for managing receipts for a user
 public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
 
     private static final String TAG = "Receipt Recycler View";

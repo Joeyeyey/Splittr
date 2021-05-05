@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 
+//  CURRENTLY NOT USED
 public class selectedImageActivity extends AppCompatActivity {
 
-//  CURRENTLY NOT USED
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

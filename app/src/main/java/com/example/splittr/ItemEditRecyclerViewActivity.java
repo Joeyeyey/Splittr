@@ -18,15 +18,17 @@ import com.example.splittr.receiptobjects.Item;
 
 import java.util.ArrayList;
 
+// Activity for managing items in a receipt
 public class ItemEditRecyclerViewActivity extends AppCompatActivity {
 
+    // initialize variables
     private static final String TAG = "ItemRecyclerView";
     ImageButton btn_addOne;
     Button btn_split_receipt;
     double taxRate = 0.085;
     double tipPercent = 0.15;
 
-    //declare arraylist
+    // declare arraylist
     ArrayList<Item> itemArrayList;
 
     private RecyclerView recyclerView;

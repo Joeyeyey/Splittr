@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.math.BigDecimal;
 
+// class for handling the math for splitting receipt items including taxes and tips
 public class SplittrMath {
 
+    // initialize variables
     private static final int roundingMethod = BigDecimal.ROUND_HALF_UP; // method for rounding during arithmetic operations
     private static BigDecimal taxRate = BigDecimal.valueOf(0.08375); // tax rate as a decimal percentage
 
@@ -23,7 +25,7 @@ public class SplittrMath {
 
     private boolean approximateTaxes;
 
-    // Constructor
+    // constructor
     public SplittrMath(Receipt receipt) {
         this.currentReceipt = receipt;
         this.weightedAdditional = BigDecimal.ZERO;
@@ -144,7 +146,7 @@ public class SplittrMath {
         return getSumSubtotal().multiply(BigDecimal.valueOf(percentage).divide(BigDecimal.valueOf(100), 4, roundingMethod));
     }
 
-    // add
+    // add a percentage of the total subtotal to the weighted additionals
     public void addWeightedTipPercentage(double percentage) {
         BigDecimal tipAmount = calculateSumSubtotalPercentage(percentage);
         System.out.println("tipAmount = " + tipAmount.toString());
@@ -209,13 +211,12 @@ public class SplittrMath {
 
     public static void printHashmap(Hashtable<String, BigDecimal> table) {
         for (String name: table.keySet()) {
-            String key = name;
             String value = table.get(name).toString();
-            System.out.println(key + " " + value);
+            System.out.println(name + " " + value);
         }
     }
 
-    // main function for testing the class
+    // main function for testing this class
     public static void main(String[] args) {
         Receipt testReceipt = new Receipt(0, "YUXIANG 6/6");
 

@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 
+// Item class for handling data regarding a single item from a receipt
 public class Item {
 
+    // initialize variables
     private int id;
     private String name;
     private BigDecimal cost;
     private boolean taxable;
     private ArrayList<String> owners;
 
+    // constructor
     public Item(int id, String name, double cost, boolean taxable) {
         this.id = id;
         this.name = name;
@@ -21,6 +24,7 @@ public class Item {
         this.owners = new ArrayList<>();
     }
 
+    // constructor
     public Item(int id, String name, double cost, boolean taxable, ArrayList<String> owners) {
         this.id = id;
         this.name = name;
@@ -29,6 +33,8 @@ public class Item {
         this.owners = owners;
     }
 
+
+    // getter and setter for var name
     public String getName() {
         return name;
     }
@@ -37,6 +43,7 @@ public class Item {
         this.name = name;
     }
 
+    // getter and setter for var cost
     public BigDecimal getCost() {
         return cost;
     }
@@ -45,6 +52,7 @@ public class Item {
         this.cost = cost;
     }
 
+    // getter and setter for var taxable
     public boolean isTaxable() {
         return taxable;
     }
@@ -53,6 +61,7 @@ public class Item {
         this.taxable = taxable;
     }
 
+    // getter and setter for var owners
     public ArrayList<String> getOwners() {
         return owners;
     }
@@ -61,20 +70,25 @@ public class Item {
         this.owners = owners;
     }
 
+    // adder for adding users to owners ArrayList
     public void addOwner(String user) {
         this.owners.add(user);
     }
 
+    // adder for adding multiple users to the owners ArrayList
     public void addOwners(List<String> users) {
         this.owners.addAll(users);
     }
 
-    public void removeOwner(User user) { this.owners.remove(user); }
+    // removing users from the owners ArrayList
+    public void removeOwner(String user) { this.owners.remove(user); }
 
+    // get the size of the owners ArrayList
     public int ownerCount() {
         return this.owners.size();
     }
 
+    // getter and setter for var id
     public int getId() {
         return id;
     }

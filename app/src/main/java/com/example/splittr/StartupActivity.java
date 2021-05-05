@@ -8,7 +8,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+// initial activity that the user sees when they first open the app
 public class StartupActivity extends AppCompatActivity {
+
+    // initialize variables
     private Button startButton;
     private boolean doubleBackToExitPressedOnce = false;
 
@@ -23,7 +26,7 @@ public class StartupActivity extends AppCompatActivity {
         });
     }
 
-    // Back twice to exit application override
+    // back twice to exit application override
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {

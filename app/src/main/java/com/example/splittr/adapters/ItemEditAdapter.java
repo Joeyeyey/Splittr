@@ -18,13 +18,17 @@ import com.example.splittr.receiptobjects.Item;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+// adapter class to help with displaying and handling items in the item RecyclerView
 public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyViewHolder> {
 
+    // initialize variables
     ArrayList<Item> itemArrayList;
     Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
 
+    // constructor
     public ItemEditAdapter(ArrayList<Item> itemArrayList, Context context) {
         this.itemArrayList = itemArrayList;
         this.context = context;
@@ -43,7 +47,7 @@ public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tv_item.setText(itemArrayList.get(position).getName());
-        holder.tv_cost.setText("$" + String.format("%.2f", itemArrayList.get(position).getCost()));
+        holder.tv_cost.setText("$" + String.format(Locale.US, "%.2f", itemArrayList.get(position).getCost()));
         holder.tv_person.setText(String.join(", ",  itemArrayList.get(position).getOwners()));
         holder.itemView.setSelected(selectedPos == position);
 

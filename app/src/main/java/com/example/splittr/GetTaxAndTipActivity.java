@@ -12,8 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+// activity for getting tax and tip from the user
 public class GetTaxAndTipActivity extends AppCompatActivity {
 
+    // initialize variables
     private static final String TAG = "GetTaxAndTipActivity";
 
     SplittrMath splitter = SplittrApplication.getSplitter();

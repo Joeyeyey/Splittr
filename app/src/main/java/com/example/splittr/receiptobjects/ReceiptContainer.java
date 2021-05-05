@@ -5,40 +5,49 @@ import android.app.Application;
 import java.util.ArrayList;
 import java.util.Locale;
 
+// Container class for holding all the receipts for a user
 public class ReceiptContainer extends Application {
 
+    // initialize variables
     private int num_receipts;
     private String owner;
     private ArrayList<Receipt> receipts;
 
+    // constructor
     public ReceiptContainer(int id, String owner) {
         this.num_receipts = 0;
         this.owner = owner;
         this.receipts = new ArrayList<>();
     }
 
+    // factory constructor
     public Receipt createReceipt() {
         receipts.add(new Receipt(num_receipts++, "test label"));
         return receipts.get(num_receipts - 1);
     }
 
+    // factory constructor
     public Receipt createReceipt(String label) {
         receipts.add(new Receipt(num_receipts++, label));
         return receipts.get(num_receipts - 1);
     }
 
+    // removing receipts from the receipts ArrayList
     public void deleteReceipt(int index) {
         receipts.remove(index);
     }
 
+    // get the size of the receipts ArrayList
     public int getReceiptCount() {
         return num_receipts;
     }
 
+    // getter for var owner
     public String getOwner() {
         return owner;
     }
 
+    // getter and setter for var receipts
     public ArrayList<Receipt> getReceipts() {
         return receipts;
     }
@@ -47,6 +56,7 @@ public class ReceiptContainer extends Application {
         receipts = n_receipts;
     }
 
+    // getter and setter for a receipt at a certain index for the receipts Arraylist
     public Receipt getReceipt(int index) {
         return receipts.get(index);
     }
@@ -55,6 +65,7 @@ public class ReceiptContainer extends Application {
         receipts.set(index, receipt);
     }
 
+    // getter and setter for the next available receipt id slot
     public int getNextId() {
         return num_receipts;
     }
@@ -63,6 +74,7 @@ public class ReceiptContainer extends Application {
         num_receipts = nextId;
     }
 
+    // main function for testing this class
     public static void main(String[] args) {
         ReceiptContainer sample_container = new ReceiptContainer(0, "user");
         sample_container.createReceipt();

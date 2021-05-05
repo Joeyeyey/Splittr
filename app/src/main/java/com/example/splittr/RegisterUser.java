@@ -19,7 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-//class declaration
+// class for handling user registration
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
 
     private TextView registerUser;
@@ -32,24 +32,24 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
 
-        //initialize firebase authentication instance
+        // initialize firebase authentication instance
         mAuth = FirebaseAuth.getInstance();
 
-        //initialize button
+        // initialize button
         registerUser = (Button) findViewById(R.id.registerUser);
-        //initialize on click method
+        // initialize on click method
         registerUser.setOnClickListener(this);
 
-        //initialize text input fields
+        // initialize text input fields
         editTextfullName = (EditText) findViewById(R.id.fullName);
         editTextemail = (EditText) findViewById(R.id.email);
         editTextpassword = (EditText) findViewById(R.id.password);
 
-        //initialize progress bar
+        // initialize progress bar
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
-    //on click methods
+    // on click methods
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -60,7 +60,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    //aquire user input and convert to string
+    // acquire user input and convert to string
     private void registerUser(){
         String email= editTextemail.getText().toString().trim();
         String password= editTextpassword.getText().toString().trim();
@@ -88,33 +88,33 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        //progress bar is now visible to user
+        // progress bar is now visible to user
         progressBar.setVisibility(View.VISIBLE);
 
-        //firebase object to create a user in database with email and password
+        // firebase object to create a user in database with email and password
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        //check if user has been registered
+                        // check if user has been registered
                         if(task.isSuccessful()){
-                            //User object to store info in database
+                            // User object to store info in database
                             com.example.splittr.UserActivity user = new com.example.splittr.UserActivity(fullName, email);
 
-                            //pass user information to database
+                            // pass user information to database
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    //check if user has been registered
+                                    // check if user has been registered
                                     if(task.isSuccessful()){
                                         Toast.makeText(RegisterUser.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
 
-                                        //redirect to login layout
+                                        // redirect to login layout
                                         startActivity(new Intent(RegisterUser.this, LoginSystemActivity.class));
                                     }
                                     else{

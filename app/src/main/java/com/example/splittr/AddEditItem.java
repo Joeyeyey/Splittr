@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 public class AddEditItem extends AppCompatActivity {
 
+    // initialize variables
     Button btn_ok, btn_cancel;
     ArrayList<Item> itemArrayList;
     EditText et_item, et_cost, et_person;

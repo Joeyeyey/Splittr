@@ -20,14 +20,17 @@ import com.example.splittr.receiptobjects.Receipt;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+// adapter class to help with displaying and handling receipts in the receipt RecyclerView
 public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdapter.MyViewHolder> {
 
+    // initialize variables
     private static final String TAG = "ReceiptSelectAdapter";
 
     public ArrayList<Receipt> receiptArrayList;
     public Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
 
+    // constructor
     public ReceiptSelectAdapter(ArrayList<Receipt> receiptArrayList, Context context) {
         this.receiptArrayList = receiptArrayList;
         this.context = context;
@@ -39,8 +42,7 @@ public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdap
 
         //associate layout with holder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_receipt, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+        return new MyViewHolder(view);
     }
 
     @Override

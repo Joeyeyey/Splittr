@@ -19,9 +19,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-//class declaration
+// class activity for prompting user login and interacting with the firebase database
 public class LoginSystemActivity extends AppCompatActivity implements View.OnClickListener{
 
+    // initialize variables
     private TextView register;
     private EditText editTextEmail, editTextPassword;
     private Button signIn;
