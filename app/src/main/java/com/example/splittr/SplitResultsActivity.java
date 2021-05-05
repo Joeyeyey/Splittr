@@ -19,7 +19,7 @@ public class SplitResultsActivity extends AppCompatActivity {
     SplittrMath splitter = SplittrApplication.getSplitter();
 
     Button btn_split_another_receipt;
-    Button btn_send_sms_reminder;
+    Button btn_send_sms_reminder; // for the future
     ListView lv_show_final_amount;
     ArrayList<String> totalAmounts = new ArrayList<>();
 
@@ -28,13 +28,24 @@ public class SplitResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_split_receipt);
 
-        Intent intent = getIntent();
-
         btn_split_another_receipt = findViewById(R.id.btn_split_another_receipt);
-//        btn_send_sms_reminder = findViewById(R.id.btn_send_reminder);
+//      btn_send_sms_reminder = findViewById(R.id.btn_send_reminder); // for the future
         lv_show_final_amount = findViewById(R.id.lv_show_final_amounts);
 
         splitter.calculateFinal();
+        System.out.println(" ======================= ");
+        System.out.println(" - Weighted Amount - ");
+        System.out.println(splitter.getWeightedAdditional());
+        System.out.println(" - Unweighted Amount - ");
+        System.out.println(splitter.getUnweightedAdditional());
+        System.out.println(" - User Subtotals - ");
+        splitter.printHashmap(splitter.getUserSubtotals());
+        System.out.println(" - User Additionals - ");
+        splitter.printHashmap(splitter.getUserAdditionals());
+        System.out.println(" - User Finals - ");
+        splitter.printHashmap(splitter.getUserFinalTotals());
+        System.out.println(" ======================= ");
+
         Hashtable<String, BigDecimal> results = splitter.getUserFinalTotals();
         for (String name : results.keySet()){
             totalAmounts.add(name + ": $" + String.format(Locale.getDefault(), "%.2f", results.get(name)));

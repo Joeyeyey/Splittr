@@ -18,8 +18,6 @@ public class GetTaxAndTipActivity extends AppCompatActivity {
 
     SplittrMath splitter = SplittrApplication.getSplitter();
 
-    public static final String TAX_RATE = "com.example.splittr.example.TAX_RATE";
-    public static final String TIP_RATE = "com.example.splittr.example.TIP_RATE";
     EditText et_taxRate, et_tipRate;
     Button btn_submit_tip_tax, btn_cancel_to_receipt_editor;
 
@@ -36,10 +34,24 @@ public class GetTaxAndTipActivity extends AppCompatActivity {
         btn_submit_tip_tax.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!et_tipRate.getText().toString().equals("") && !et_taxRate.getText().toString().equals("")){
+                if(!et_tipRate.getText().toString().equals("") && !et_taxRate.getText().toString().equals("")) {
+
+                    // clear hashmaps so that values dont stack in future calculations
+                    splitter.resetAdditionals();
+                    splitter.resetSubtotals();
+                    splitter.clearUnweightedAdditionals();
+                    splitter.clearWeightedAdditionals();
+
+                    splitter.processSubtotal();
 
                     splitter.setTaxRate(Double.parseDouble(et_taxRate.getText().toString().replace("%", "")));
+                    splitter.processGlobalTax();
+
                     splitter.addWeightedTipPercentage(Double.parseDouble(et_tipRate.getText().toString().replace("%", "")));
+
+                    splitter.processWeighted();
+                    splitter.processUnweighted();
+
                     Intent intent = new Intent(GetTaxAndTipActivity.this, SplitResultsActivity.class);
                     startActivity(intent);
                 } else {
@@ -64,7 +76,6 @@ public class GetTaxAndTipActivity extends AppCompatActivity {
                     et_taxRate.setText(et_taxRate.getText().toString().replace("%", "") + "%");
                     et_taxRate.setSelection(et_taxRate.getText().length() - 1);
                 }
-
             }
 
             @Override
@@ -81,7 +92,6 @@ public class GetTaxAndTipActivity extends AppCompatActivity {
                     et_tipRate.setText(et_tipRate.getText().toString().replace("%", "") + "%");
                     et_tipRate.setSelection(et_tipRate.getText().length() - 1);
                 }
-
             }
 
             @Override
