@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.splittr.SplittrApplication;
 import com.example.splittr.ItemEditRecyclerViewActivity;
 import com.example.splittr.R;
+import com.example.splittr.SplittrApplication;
 import com.example.splittr.receiptobjects.Receipt;
 
 import java.time.format.DateTimeFormatter;

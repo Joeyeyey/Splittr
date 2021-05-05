@@ -4,9 +4,10 @@ package com.example.splittr.receiptobjects;
 public class User {
 
     // initialize variables
+    private final boolean registered;
+
     private int id;
     private String name;
-    private final boolean registered;
 
     // constructor
     public User(String name) {

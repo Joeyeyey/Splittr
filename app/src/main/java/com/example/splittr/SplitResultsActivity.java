@@ -1,13 +1,12 @@
 package com.example.splittr;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ import java.util.Locale;
 // activity for displaying the results of the receipt split to the user
 public class SplitResultsActivity extends AppCompatActivity {
 
+    // initialize variables
     SplittrMath splitter = SplittrApplication.getSplitter();
 
     Button btn_split_another_receipt;

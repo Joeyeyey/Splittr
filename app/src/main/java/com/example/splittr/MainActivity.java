@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -22,28 +21,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,21 +47,31 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     // initialize variables
-    private static final String TAG = "MainActivity";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_GALLERY = 2;
     static final int REQUEST_WRITE_PERM = 112;
 
+    private static final String TAG = "MainActivity";
+    String currentPhotoPath;
+
+    // instantiate the RequestQueue.
+    RequestQueue requestQueue;
+    String url = "https://tesseract.joeyeyey.dev/json";
     private ImageButton takePhotoButton;
     private ImageButton photoGalleryButton;
     private ImageButton manageExistingButton;
     private Button signout;
 
-    String currentPhotoPath;
-
-    // Instantiate the RequestQueue.
-    RequestQueue requestQueue;
-    String url = "https://tesseract.joeyeyey.dev/json";
+    private static boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     // on activity creation
     @Override
@@ -263,7 +267,8 @@ public class MainActivity extends AppCompatActivity {
 
         final String requestBody = jsonBody.toString();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                response -> Log.d("postTesseract Response Code", response), error -> Log.e("postTesseract Error", error.toString())) {
+                response -> Log.d("postTesseract Response Code", response), error -> Log.e(
+                        "postTesseract Error", error.toString())) {
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
@@ -324,17 +329,6 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
 
         return SplittrApplication.globalPostResponse;
-    }
-
-    private static boolean hasPermissions(Context context, String... permissions) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     @Override

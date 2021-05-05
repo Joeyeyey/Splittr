@@ -2,7 +2,6 @@ package com.example.splittr;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -63,7 +62,8 @@ public class AddEditItem extends AppCompatActivity {
 
                     Item updatedItem = new Item(id, et_item.getText().toString(),
                             Double.parseDouble(et_cost.getText().toString()), false,
-                            new ArrayList<>(Arrays.asList(et_person.getText().toString().split("\\s*,\\s*"))));
+                            new ArrayList<>(Arrays.asList(et_person.getText().toString().split(
+                                    "\\s*,\\s*"))));
                     itemArrayList.set(id, updatedItem);
                 } else {
                     //add new list component
@@ -71,7 +71,8 @@ public class AddEditItem extends AppCompatActivity {
                     int nextId = SplittrApplication.getNextItemId();
                     Item updatedItem = new Item(nextId, et_item.getText().toString(),
                             Double.parseDouble(et_cost.getText().toString()), false,
-                            new ArrayList<>(Arrays.asList(et_person.getText().toString().split("\\s*,\\s*"))));
+                            new ArrayList<>(Arrays.asList(et_person.getText().toString().split(
+                                    "\\s*,\\s*"))));
 
                     //adds object to global list of items
                     itemArrayList.add(updatedItem);

@@ -3,33 +3,38 @@ package com.example.splittr;
 import com.example.splittr.receiptobjects.Item;
 import com.example.splittr.receiptobjects.Receipt;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Hashtable;
-import java.math.BigDecimal;
 
 // class for handling the math for splitting receipt items including taxes and tips
 public class SplittrMath {
 
     // initialize variables
-    private static final int roundingMethod = BigDecimal.ROUND_HALF_UP; // method for rounding
-    // during arithmetic operations
-    private static BigDecimal taxRate = BigDecimal.valueOf(0.08375); // tax rate as a decimal
-    // percentage
+    // method for rounding during arithmetic operations
+    private static final int roundingMethod = BigDecimal.ROUND_HALF_UP;
+    // tax rate as a decimal percentage
+    private static BigDecimal taxRate = BigDecimal.valueOf(0.08375);
 
-    private final Receipt currentReceipt; // the receipt that this math class is being applied on
+    // the receipt that this math class is being applied on
+    private final Receipt currentReceipt;
 
-    private final Hashtable<String, BigDecimal> userSubtotals = new Hashtable<>(); // hashmap of
-    // user -> subtotal owes
-    private final Hashtable<String, BigDecimal> userAdditionals = new Hashtable<>(); // hashmap
-    // of user -> additional owes
-    private final Hashtable<String, BigDecimal> userFinalTotals = new Hashtable<>(); // hashmap
-    // of user -> total owes (calculated by summing the other to hashmaps
+    // hashmap of user -> subtotal owes
+    private final Hashtable<String, BigDecimal> userSubtotals = new Hashtable<>();
 
-    private BigDecimal weightedAdditional; // additional owes that are split amongst users based
-    // on their ratio of subtotal owes to the receipt total
-    private BigDecimal unweightedAdditional; // additional owes that are split amongst users evenly
+    // hashmap of user -> additional owes
+    private final Hashtable<String, BigDecimal> userAdditionals = new Hashtable<>();
 
+    // hashmap of user -> total owes (calculated by summing the other to hashmaps
+    private final Hashtable<String, BigDecimal> userFinalTotals = new Hashtable<>();
     private final boolean approximateTaxes;
+
+    // additional owes that are split amongst users based on their ratio of subtotal owes to the
+    // receipt total
+    private BigDecimal weightedAdditional;
+
+    // additional owes that are split amongst users evenly
+    private BigDecimal unweightedAdditional;
 
     // constructor
     public SplittrMath(Receipt receipt) {
@@ -46,6 +51,56 @@ public class SplittrMath {
         this.unweightedAdditional = BigDecimal.ZERO;
         this.approximateTaxes = approximateTax;
         this.processSubtotal();
+    }
+
+    // get the taxed value of an item
+    private static BigDecimal getTaxedValue(BigDecimal amount) {
+        return amount.multiply(taxRate);
+    }
+
+    public static void printHashmap(Hashtable<String, BigDecimal> table) {
+        for (String name : table.keySet()) {
+            String value = table.get(name).toString();
+            System.out.println(name + " " + value);
+        }
+    }
+
+    // main function for testing this class
+    public static void main(String[] args) {
+        Receipt testReceipt = new Receipt(0, "YUXIANG 6/6");
+
+        String user1 = "Jonathan";
+        String user2 = "Tiffany";
+        String user3 = "Vicki";
+        String user4 = "Candace";
+        String user5 = "Solina";
+        String user6 = "Michael";
+
+        Item food1 = new Item(0, "Jjajangmyeon", 8.00, true);
+        Item food2 = new Item(1, "Jjajangmyeon", 8.00, true);
+        Item food3 = new Item(2, "Jjajangmyeon", 8.00, true);
+        Item food4 = new Item(3, "Tangsuyuk", 16.00, true);
+        Item food5 = new Item(4, "Homemade Deep Fried Dumplings", 7.50, true);
+        Item food6 = new Item(5, "Homemade Deep Fried Dumplings", 7.50, true);
+        Item food7 = new Item(6, "Jjajangmyeon", 8.00, true);
+        Item food8 = new Item(7, "Salt Pepper Squid", 9.95, true);
+        Item food9 = new Item(8, "Chicken Wings", 8.50, true);
+
+        food1.addOwner(user2);
+        food2.addOwner(user5);
+        food3.addOwner(user3);
+        food4.addOwners(Arrays.asList(user1, user6, user2, user3));
+        food5.addOwner(user4);
+        food6.addOwners(Arrays.asList(user5, user2, user3));
+        food7.addOwner(user4);
+        food8.addOwner(user1);
+        food9.addOwner(user6);
+
+        testReceipt.addItems(Arrays.asList(food1, food2, food3, food4, food5, food6, food7, food8
+                , food9));
+
+        SplittrMath mather = new SplittrMath(testReceipt, 24.62, false);
+        mather.calculateFinal();
     }
 
     // Changes the default tax rate
@@ -122,11 +177,6 @@ public class SplittrMath {
                     userSubtotals.get(user).add(userAdditionals.getOrDefault(user,
                             BigDecimal.ZERO)));
         }
-    }
-
-    // get the taxed value of an item
-    private static BigDecimal getTaxedValue(BigDecimal amount) {
-        return amount.multiply(taxRate);
     }
 
     // gets the sum of all user subtotals from the user subtotal hashmap
@@ -225,50 +275,5 @@ public class SplittrMath {
     // getter for the user final totals hashmap
     public Hashtable<String, BigDecimal> getUserFinalTotals() {
         return userFinalTotals;
-    }
-
-    public static void printHashmap(Hashtable<String, BigDecimal> table) {
-        for (String name : table.keySet()) {
-            String value = table.get(name).toString();
-            System.out.println(name + " " + value);
-        }
-    }
-
-    // main function for testing this class
-    public static void main(String[] args) {
-        Receipt testReceipt = new Receipt(0, "YUXIANG 6/6");
-
-        String user1 = "Jonathan";
-        String user2 = "Tiffany";
-        String user3 = "Vicki";
-        String user4 = "Candace";
-        String user5 = "Solina";
-        String user6 = "Michael";
-
-        Item food1 = new Item(0, "Jjajangmyeon", 8.00, true);
-        Item food2 = new Item(1, "Jjajangmyeon", 8.00, true);
-        Item food3 = new Item(2, "Jjajangmyeon", 8.00, true);
-        Item food4 = new Item(3, "Tangsuyuk", 16.00, true);
-        Item food5 = new Item(4, "Homemade Deep Fried Dumplings", 7.50, true);
-        Item food6 = new Item(5, "Homemade Deep Fried Dumplings", 7.50, true);
-        Item food7 = new Item(6, "Jjajangmyeon", 8.00, true);
-        Item food8 = new Item(7, "Salt Pepper Squid", 9.95, true);
-        Item food9 = new Item(8, "Chicken Wings", 8.50, true);
-
-        food1.addOwner(user2);
-        food2.addOwner(user5);
-        food3.addOwner(user3);
-        food4.addOwners(Arrays.asList(user1, user6, user2, user3));
-        food5.addOwner(user4);
-        food6.addOwners(Arrays.asList(user5, user2, user3));
-        food7.addOwner(user4);
-        food8.addOwner(user1);
-        food9.addOwner(user6);
-
-        testReceipt.addItems(Arrays.asList(food1, food2, food3, food4, food5, food6, food7, food8
-                , food9));
-
-        SplittrMath mather = new SplittrMath(testReceipt, 24.62, false);
-        mather.calculateFinal();
     }
 }

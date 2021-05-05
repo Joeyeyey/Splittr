@@ -5,35 +5,26 @@ import android.app.Application;
 import com.example.splittr.receiptobjects.Item;
 import com.example.splittr.receiptobjects.Receipt;
 import com.example.splittr.receiptobjects.ReceiptContainer;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 // singleton class for variable storage/access and overall management of receipts throughout the app
 public class SplittrApplication extends Application {
 
     // initialize variables
+    // variables for handling json responses from the Tesseract post request
+    public static String globalPostResponse;
+    public static JSONObject globalJSONObj;
+
     private static ReceiptContainer receiptContainer;
     private static int nextReceiptId;
-
     private static Receipt selectedReceipt;
     private static int nextItemId;
 
     // main SplitterMath object that all activities will refer to
     private static SplittrMath splitter;
-
-    // variables for handling json responses from the Tesseract post request
-    public static String globalPostResponse;
-    public static JSONObject globalJSONObj;
 
     // initial constructor
     public SplittrApplication() {

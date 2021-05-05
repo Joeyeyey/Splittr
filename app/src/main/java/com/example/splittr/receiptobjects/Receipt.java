@@ -9,13 +9,13 @@ import java.util.List;
 public class Receipt {
 
     // initialize variables
-    private int id;
-    private String label;
     private final LocalDate creation_time;
-    private ArrayList<Item> items;
-
     // formatter for formatting calendar dates
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+    private int id;
+    private String label;
+    private ArrayList<Item> items;
 
     // constructor
     public Receipt(int id, String label) {

@@ -3,7 +3,6 @@ package com.example.splittr;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 // Activity for managing receipts for a user
 public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
 
+    // initialize variables
     private static final String TAG = "Receipt Recycler View";
     ImageButton btn_addOne;
 
@@ -28,6 +28,24 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
+
+    //initialize ItemTouchHelper to delete receipt items
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0
+            , ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            receiptArrayList.remove(viewHolder.getAdapterPosition());
+            SplittrApplication.recalculateReceiptIds();
+            mAdapter.notifyDataSetChanged();
+        }
+    };
     private RecyclerView.LayoutManager layoutManager;
 
     // on activity creation
@@ -70,24 +88,6 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
     }
-
-    //initialize ItemTouchHelper to delete receipt items
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0
-            , ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView,
-                              @NonNull RecyclerView.ViewHolder viewHolder,
-                              @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            receiptArrayList.remove(viewHolder.getAdapterPosition());
-            SplittrApplication.recalculateReceiptIds();
-            mAdapter.notifyDataSetChanged();
-        }
-    };
 
     @Override
     public void onBackPressed() {

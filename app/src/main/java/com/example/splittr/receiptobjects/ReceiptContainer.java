@@ -9,8 +9,9 @@ import java.util.Locale;
 public class ReceiptContainer extends Application {
 
     // initialize variables
-    private int num_receipts;
     private final String owner;
+
+    private int num_receipts;
     private ArrayList<Receipt> receipts;
 
     // constructor
@@ -18,6 +19,23 @@ public class ReceiptContainer extends Application {
         this.num_receipts = 0;
         this.owner = owner;
         this.receipts = new ArrayList<>();
+    }
+
+    // main function for testing this class
+    public static void main(String[] args) {
+        ReceiptContainer sample_container = new ReceiptContainer(0, "user");
+        sample_container.createReceipt();
+        sample_container.createReceipt();
+        sample_container.createReceipt();
+        System.out.println(String.format(Locale.US, "Number of receipts: %d",
+                sample_container.getReceiptCount()));
+
+        Receipt sample_receipt = new Receipt(3, "Today's McDeez");
+        sample_receipt.addItem(new Item(0, "Cheeseburger", 1.50, true));
+        sample_receipt.addItem(new Item(1, "20pc McNuggets", 5.00, true));
+        sample_receipt.addItem(new Item(2, "Quarter-Pounder Deluxe", 6.29, true));
+        sample_receipt.addItem(new Item(3, "Large Drink", 1.00, true));
+        sample_receipt.printItems();
     }
 
     // factory constructor
@@ -72,22 +90,5 @@ public class ReceiptContainer extends Application {
 
     public void setNextId(int nextId) {
         num_receipts = nextId;
-    }
-
-    // main function for testing this class
-    public static void main(String[] args) {
-        ReceiptContainer sample_container = new ReceiptContainer(0, "user");
-        sample_container.createReceipt();
-        sample_container.createReceipt();
-        sample_container.createReceipt();
-        System.out.println(String.format(Locale.US, "Number of receipts: %d",
-                sample_container.getReceiptCount()));
-
-        Receipt sample_receipt = new Receipt(3, "Today's McDeez");
-        sample_receipt.addItem(new Item(0, "Cheeseburger", 1.50, true));
-        sample_receipt.addItem(new Item(1, "20pc McNuggets", 5.00, true));
-        sample_receipt.addItem(new Item(2, "Quarter-Pounder Deluxe", 6.29, true));
-        sample_receipt.addItem(new Item(3, "Large Drink", 1.00, true));
-        sample_receipt.printItems();
     }
 }

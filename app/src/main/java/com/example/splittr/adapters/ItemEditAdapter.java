@@ -15,9 +15,7 @@ import com.example.splittr.AddEditItem;
 import com.example.splittr.R;
 import com.example.splittr.receiptobjects.Item;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 // adapter class to help with displaying and handling items in the item RecyclerView

@@ -12,10 +12,10 @@
     //richard color
     <color name="beige">#FFE8D1</color>
     <color name="darkblue">#568EA3</color>
-    <color name="lightblue">#68C3D4 </color>
+    <color name="lightblue">#68C3D4</color>
     <color name="darkred">#C1666B</color>
-    <color name="pink">#AC80A0 </color>
-    <color name="lightred">#E3655B </color>
+    <color name="pink">#AC80A0</color>
+    <color name="lightred">#E3655B</color>
     <color name="brown">#5B5941</color>
     <color name="lightgray">#f9f9f9</color>
     <color name="dark_blue_transparent">#99568EA3</color>
