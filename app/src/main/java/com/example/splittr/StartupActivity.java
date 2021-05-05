@@ -15,15 +15,14 @@ public class StartupActivity extends AppCompatActivity {
     private Button startButton;
     private boolean doubleBackToExitPressedOnce = false;
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starting);
 
         startButton = (Button) findViewById(R.id.button_start);
-        startButton.setOnClickListener(v -> {
-            openMainActivity();
-        });
+        startButton.setOnClickListener(v -> openMainActivity());
     }
 
     // back twice to exit application override
@@ -37,15 +36,11 @@ public class StartupActivity extends AppCompatActivity {
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-            }
-        }, 2000);
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
 
     }
 
+    // function to open the main activity MainActivity
     public void openMainActivity() {
         Intent intent = new Intent(this, LoginSystemActivity.class);
         startActivity(intent);

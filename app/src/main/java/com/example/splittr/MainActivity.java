@@ -67,15 +67,17 @@ public class MainActivity extends AppCompatActivity {
 
     // Instantiate the RequestQueue.
     RequestQueue requestQueue;
-    String url ="https://tesseract.joeyeyey.dev/json";
+    String url = "https://tesseract.joeyeyey.dev/json";
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Requesting permission on runtime
-        String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE};
         ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_WRITE_PERM);
 //        if (!hasPermissions(this, PERMISSIONS)) {
 //            ActivityCompat.requestPermissions((Activity) this, PERMISSIONS, REQUEST_WRITE_PERM );
@@ -86,33 +88,23 @@ public class MainActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this); // INSTANTIATE REQUEST QUEUE
 
         takePhotoButton = (ImageButton) findViewById(R.id.button_camera_main);
-        takePhotoButton.setOnClickListener(v -> {
-            dispatchTakePictureIntent();
-        });
+        takePhotoButton.setOnClickListener(v -> dispatchTakePictureIntent());
 
         photoGalleryButton = (ImageButton) findViewById(R.id.button_gallery_main);
-        photoGalleryButton.setOnClickListener(v -> {
-            openImageGallery();
-        });
+        photoGalleryButton.setOnClickListener(v -> openImageGallery());
 
         manageExistingButton = (ImageButton) findViewById(R.id.button_manageExisting_main);
-        manageExistingButton.setOnClickListener(v -> {
-            openReceiptActivity();
-        });
+        manageExistingButton.setOnClickListener(v -> openReceiptActivity());
 
         //assign button to signout variable
         signout = (Button) findViewById(R.id.btn_signout);
 
         //set onclick listener for button
-        signout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //get instance from firebase to sign user out
-                //redirect to login page
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this, LoginSystemActivity.class));
-            }
-
+        signout.setOnClickListener(v -> {
+            //get instance from firebase to sign user out
+            //redirect to login page
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(MainActivity.this, LoginSystemActivity.class));
         });
 
     }
@@ -134,24 +126,28 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic();  //Not working to add but refreshes media store
         } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
-            String encodedImage, tesseractResult = null;
+            String encodedImage;
 
             SplittrApplication.globalPostResponse = "empty";
             encodedImage = encodeBase64Image(data.getData());
             Toast.makeText(this, "Processing image...", Toast.LENGTH_SHORT).show();
 
-            tesseractResult = postTesseract(encodedImage);
-            Log.d("POST FINAL",  SplittrApplication.globalPostResponse);
+            postTesseract(encodedImage);
+            Log.d("POST FINAL", SplittrApplication.globalPostResponse);
         }
     }
 
+    // activity for handling pre-creation of an image file for saving the image taken from the
+    // camera
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 //        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);    // FOR PRIVATE
 //        File storageDir = Environment.getExternalStorageDirectory();    // FOR PUBLIC, DEPRECATED
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES); // the holy function
+        File storageDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES); //
+        // the holy function
 
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -178,11 +174,13 @@ public class MainActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Toast.makeText(this, "Failed to create file, check storage permissions?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to create file, check storage permissions?",
+                        Toast.LENGTH_SHORT).show();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(this, "com.example.android" +
+                        ".fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -216,12 +214,14 @@ public class MainActivity extends AppCompatActivity {
         byte[] myByteArray = baos.toByteArray();
 
         // Encode image
-        encodedString = Base64.encodeToString(myByteArray, Base64.NO_WRAP);   // NO_WRAP for no new lines
+        encodedString = Base64.encodeToString(myByteArray, Base64.NO_WRAP);   // NO_WRAP for no
+        // new lines
         Log.d("D/encodeBase64Image", "Encoded String Length: " + encodedString.length());
 
         // Decode test
 //        byte[] decodedString = Base64.decode(encodedString, Base64.DEFAULT);
-//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString
+//        .length);
 //        Log.d("D/encodeBase64Image", "Image decoded");
 //        selectedView.setImageBitmap(decodedByte); // TEMPORARY TEST
 
@@ -236,12 +236,13 @@ public class MainActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // Display the first 500 characters of the response string.
-                    Toast.makeText(MainActivity.this, response.substring(0, 20), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, response.substring(0, 20),
+                            Toast.LENGTH_LONG).show();
                     Log.d("D/getTesseract stringRequest Response", response);
                 }, error -> {
-                    Toast.makeText(MainActivity.this, "That didn't work!", Toast.LENGTH_LONG).show();
-                    Log.d("D/getTesseract stringRequest Error", "Volley error on response");
-                });
+            Toast.makeText(MainActivity.this, "That didn't work!", Toast.LENGTH_LONG).show();
+            Log.d("D/getTesseract stringRequest Error", "Volley error on response");
+        });
 
         requestQueue.add(stringRequest);
         requestResponse = stringRequest.toString();
@@ -262,17 +263,17 @@ public class MainActivity extends AppCompatActivity {
 
         final String requestBody = jsonBody.toString();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                response -> {
-                    Log.d("postTesseract Response Code", response);
-                }, error -> Log.e("postTesseract Error", error.toString())) {
+                response -> Log.d("postTesseract Response Code", response), error -> Log.e("postTesseract Error", error.toString())) {
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
             }
+
             @Override
             public byte[] getBody() {
                 return requestBody.getBytes(StandardCharsets.UTF_8);
             }
+
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 String responseString = "";
@@ -280,11 +281,11 @@ public class MainActivity extends AppCompatActivity {
                     responseString = String.valueOf(response.statusCode);
                     // can get more details such as response.headers
                 }
-                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                return Response.success(responseString,
+                        HttpHeaderParser.parseCacheHeaders(response));
             }
         };
         requestQueue.add(stringRequest);
-
 
 
         requestResponse = stringRequest.toString();
@@ -305,22 +306,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Enter the correct url for your api service site
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        SplittrApplication.globalPostResponse = response.toString();
-                        SplittrApplication.globalJSONObj = response;
-                        Log.d("POST RESPONSE",  SplittrApplication.globalPostResponse);
-                        SplittrApplication.addReceiptFromJson();
-                        Toast.makeText(MainActivity.this, "Finished importing image!", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("POST ERROR", "Error sending post request");
-            }
-        });
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                params,
+                response -> {
+                    SplittrApplication.globalPostResponse = response.toString();
+                    SplittrApplication.globalJSONObj = response;
+                    Log.d("POST RESPONSE", SplittrApplication.globalPostResponse);
+                    SplittrApplication.addReceiptFromJson();
+                    Toast.makeText(MainActivity.this, "Finished importing image!",
+                            Toast.LENGTH_SHORT).show();
+                }, error -> Log.e("POST ERROR", "Error sending post request"));
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                 5000,
                 3,
@@ -343,14 +338,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_WRITE_PERM) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
                 Log.d("D/onRequestPermissionsResult", "Write perm granted");
             } else {
-                Toast.makeText(this, "The app was not allowed to read your store.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "The app was not allowed to read your store.",
+                        Toast.LENGTH_LONG).show();
                 Log.d("D/onRequestPermissionsResult", "Write perm denied");
             }
         }

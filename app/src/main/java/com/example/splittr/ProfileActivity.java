@@ -30,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Button logout;
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +38,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         logout = (Button) findViewById(R.id.logOut);
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(ProfileActivity.this, LoginSystemActivity.class));
-            }
+        logout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(ProfileActivity.this, LoginSystemActivity.class));
         });
 
         //initialize methods to get data from database
@@ -57,10 +55,11 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //create User object
-                com.example.splittr.UserActivity userProfile = snapshot.getValue(com.example.splittr.UserActivity.class);
+                com.example.splittr.UserActivity userProfile =
+                        snapshot.getValue(com.example.splittr.UserActivity.class);
 
                 //display user name on menu page
-                if(userProfile != null){
+                if (userProfile != null) {
                     String fullName = userProfile.fullName;
                     nameTextView.setText("Welcome " + fullName);
                 }

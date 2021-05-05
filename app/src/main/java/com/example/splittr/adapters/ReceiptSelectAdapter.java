@@ -41,7 +41,8 @@ public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdap
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         //associate layout with holder
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_receipt, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_receipt,
+                parent, false);
         return new MyViewHolder(view);
     }
 
@@ -53,23 +54,20 @@ public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdap
 
         holder.itemView.setSelected(selectedPos == position);
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.parentLayout.setOnClickListener(view -> {
 
-                //change recyclerview item colors
-                notifyItemChanged(selectedPos);
-                selectedPos = position;
-                Log.d(TAG, "onClick: selectedPos = " + selectedPos);
-                notifyItemChanged(selectedPos);
+            //change recyclerview item colors
+            notifyItemChanged(selectedPos);
+            selectedPos = position;
+            Log.d(TAG, "onClick: selectedPos = " + selectedPos);
+            notifyItemChanged(selectedPos);
 
-                SplittrApplication.setSelectedReceipt(SplittrApplication.getReceiptContainer().getReceipt(selectedPos));
+            SplittrApplication.setSelectedReceipt(SplittrApplication.getReceiptContainer().getReceipt(selectedPos));
 
-                //send control to AddEditOne activity
-                Intent intent = new Intent(context, ItemEditRecyclerViewActivity.class);
-                intent.putExtra("id", receiptArrayList.get(position).getId());
-                context.startActivity(intent);
-            }
+            //send control to AddEditOne activity
+            Intent intent = new Intent(context, ItemEditRecyclerViewActivity.class);
+            intent.putExtra("id", receiptArrayList.get(position).getId());
+            context.startActivity(intent);
         });
     }
 
@@ -78,7 +76,7 @@ public class ReceiptSelectAdapter extends RecyclerView.Adapter<ReceiptSelectAdap
         return receiptArrayList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_receiptLabel;
         TextView tv_receiptDate;
         ConstraintLayout parentLayout;

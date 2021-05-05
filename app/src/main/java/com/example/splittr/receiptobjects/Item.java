@@ -81,7 +81,9 @@ public class Item {
     }
 
     // removing users from the owners ArrayList
-    public void removeOwner(String user) { this.owners.remove(user); }
+    public void removeOwner(String user) {
+        this.owners.remove(user);
+    }
 
     // get the size of the owners ArrayList
     public int ownerCount() {

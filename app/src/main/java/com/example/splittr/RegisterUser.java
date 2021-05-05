@@ -22,11 +22,14 @@ import com.google.firebase.database.FirebaseDatabase;
 // class for handling user registration
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
 
+    // initialize variables
     private TextView registerUser;
     private EditText editTextfullName, editTextemail, editTextpassword;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
+
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,37 +55,34 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     // on click methods
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.registerUser:
-                registerUser();
-                break;
+        if (v.getId() == R.id.registerUser) {
+            registerUser();
         }
-
     }
 
     // acquire user input and convert to string
-    private void registerUser(){
-        String email= editTextemail.getText().toString().trim();
-        String password= editTextpassword.getText().toString().trim();
-        String fullName= editTextfullName.getText().toString().trim();
+    private void registerUser() {
+        String email = editTextemail.getText().toString().trim();
+        String password = editTextpassword.getText().toString().trim();
+        String fullName = editTextfullName.getText().toString().trim();
 
         //email and password error checking
-        if(fullName.isEmpty()){
+        if (fullName.isEmpty()) {
             editTextfullName.setError("Full name is required!");
             editTextfullName.requestFocus();
             return;
         }
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editTextemail.setError("Email is required!");
             editTextemail.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextemail.setError("Please provide valid email!");
             editTextemail.requestFocus();
             return;
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextpassword.setError("Password is required!");
             editTextpassword.requestFocus();
             return;
@@ -93,42 +93,39 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
         // firebase object to create a user in database with email and password
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                .addOnCompleteListener(task -> {
 
-                        // check if user has been registered
-                        if(task.isSuccessful()){
-                            // User object to store info in database
-                            com.example.splittr.UserActivity user = new com.example.splittr.UserActivity(fullName, email);
+                    // check if user has been registered
+                    if (task.isSuccessful()) {
+                        // User object to store info in database
+                        UserActivity user =
+                                new UserActivity(fullName, email);
 
-                            // pass user information to database
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
+                        // pass user information to database
+                        FirebaseDatabase.getInstance().getReference("Users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .setValue(user).addOnCompleteListener(task1 -> {
 
-                                    // check if user has been registered
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(RegisterUser.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
+                            // check if user has been registered
+                            if (task1.isSuccessful()) {
+                                Toast.makeText(RegisterUser.this, "User has been " +
+                                        "registered successfully", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
 
-                                        // redirect to login layout
-                                        startActivity(new Intent(RegisterUser.this, LoginSystemActivity.class));
-                                    }
-                                    else{
-                                        Toast.makeText(RegisterUser.this, "Failed to register. Try again", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
+                                // redirect to login layout
+                                startActivity(new Intent(RegisterUser.this,
+                                        LoginSystemActivity.class));
+                            } else {
+                                Toast.makeText(RegisterUser.this, "Failed to register. " +
+                                        "Try again", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
 
-                        }
-                        else{
-                            Toast.makeText(RegisterUser.this, "User Account Already Exists", Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
+                    } else {
+                        Toast.makeText(RegisterUser.this, "User Account Already Exists",
+                                Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
     }

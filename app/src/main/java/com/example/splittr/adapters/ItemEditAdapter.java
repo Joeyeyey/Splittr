@@ -39,32 +39,30 @@ public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         //associate layout with holder
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_item, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_item,
+                parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tv_item.setText(itemArrayList.get(position).getName());
-        holder.tv_cost.setText("$" + String.format(Locale.US, "%.2f", itemArrayList.get(position).getCost()));
-        holder.tv_person.setText(String.join(", ",  itemArrayList.get(position).getOwners()));
+        holder.tv_cost.setText("$" + String.format(Locale.US, "%.2f",
+                itemArrayList.get(position).getCost()));
+        holder.tv_person.setText(String.join(", ", itemArrayList.get(position).getOwners()));
         holder.itemView.setSelected(selectedPos == position);
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.parentLayout.setOnClickListener(view -> {
 
-                //change recyclerview item colors
-                notifyItemChanged(selectedPos);
-                selectedPos = position;
-                notifyItemChanged(selectedPos);
+            //change recyclerview item colors
+            notifyItemChanged(selectedPos);
+            selectedPos = position;
+            notifyItemChanged(selectedPos);
 
-                //send control to AddEditItem activity
-                Intent intent = new Intent(context, AddEditItem.class);
-                intent.putExtra("id", itemArrayList.get(position).getId());
-                context.startActivity(intent);
-            }
+            //send control to AddEditItem activity
+            Intent intent = new Intent(context, AddEditItem.class);
+            intent.putExtra("id", itemArrayList.get(position).getId());
+            context.startActivity(intent);
         });
     }
 
@@ -73,7 +71,7 @@ public class ItemEditAdapter extends RecyclerView.Adapter<ItemEditAdapter.MyView
         return itemArrayList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_item;
         TextView tv_cost;
         TextView tv_person;

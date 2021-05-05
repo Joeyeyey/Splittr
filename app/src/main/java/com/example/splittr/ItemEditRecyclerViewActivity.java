@@ -35,6 +35,7 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +45,10 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
         itemArrayList = SplittrApplication.getSelectedReceipt().getItems();
 
         Log.d(TAG, "onCreate: " + itemArrayList.toString());
-//        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, "Arraylist size = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count =
+//        " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Arraylist size = " + receiptArrayList.size(), Toast.LENGTH_SHORT)
+//        .show();
 
         btn_addOne = findViewById(R.id.btn_addOne);
         btn_split_receipt = findViewById(R.id.btn_split_receipt);
@@ -65,31 +68,28 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
         //set onclick action for add button
-        btn_addOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ItemEditRecyclerViewActivity.this, AddEditItem.class);
-                startActivity(intent);
-            }
+        btn_addOne.setOnClickListener(view -> {
+            Intent intent = new Intent(ItemEditRecyclerViewActivity.this, AddEditItem.class);
+            startActivity(intent);
         });
 
-        btn_split_receipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_split_receipt.setOnClickListener(v -> {
 
-                Intent intent = new Intent(ItemEditRecyclerViewActivity.this, GetTaxAndTipActivity.class);
-                startActivity(intent);
-            }
+            Intent intent = new Intent(ItemEditRecyclerViewActivity.this,
+                    GetTaxAndTipActivity.class);
+            startActivity(intent);
         });
-
 
 
     }
 
     //initialize ItemTouchHelper to delete receipt items
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0
+            , ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
@@ -102,8 +102,7 @@ public class ItemEditRecyclerViewActivity extends AppCompatActivity {
     };
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent intent = new Intent(this, ReceiptSelectRecyclerViewActivity.class);
         startActivity(intent);
     }

@@ -11,8 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.File;
 
 //  CURRENTLY NOT USED
-public class selectedImageActivity extends AppCompatActivity {
+public class SelectedImageActivity extends AppCompatActivity {
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,9 +21,9 @@ public class selectedImageActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent();
         String filePath = intent.getStringExtra("filePath");
-        File imgFile = new  File(filePath);
+        File imgFile = new File(filePath);
 
-        if(imgFile.exists()){
+        if (imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             ImageView myImage = (ImageView) findViewById(R.id.image_taken);
             myImage.setImageBitmap(myBitmap);

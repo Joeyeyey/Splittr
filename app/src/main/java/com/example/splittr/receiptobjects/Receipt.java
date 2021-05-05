@@ -11,7 +11,7 @@ public class Receipt {
     // initialize variables
     private int id;
     private String label;
-    private LocalDate creation_time;
+    private final LocalDate creation_time;
     private ArrayList<Item> items;
 
     // formatter for formatting calendar dates
@@ -38,7 +38,9 @@ public class Receipt {
         return id;
     }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     // getter and setter for var label
     public String getLabel() {

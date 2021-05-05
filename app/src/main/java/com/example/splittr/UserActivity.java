@@ -7,12 +7,13 @@ public class UserActivity {
     public String fullName, email;
 
     // empty constructor
-    public UserActivity() {}
+    public UserActivity() {
+    }
 
     // constructor
-    public UserActivity(String fullName, String email){
-        this.fullName= fullName;
-        this.email= email;
+    public UserActivity(String fullName, String email) {
+        this.fullName = fullName;
+        this.email = email;
     }
 
 }

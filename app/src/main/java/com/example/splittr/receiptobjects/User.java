@@ -6,7 +6,7 @@ public class User {
     // initialize variables
     private int id;
     private String name;
-    private boolean registered;
+    private final boolean registered;
 
     // constructor
     public User(String name) {

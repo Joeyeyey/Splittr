@@ -23,8 +23,7 @@ public class AddReceipt extends AppCompatActivity {
     EditText et_date;
     int id;
 
-    SplittrApplication myApplication = (SplittrApplication) this.getApplication();
-
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,57 +43,52 @@ public class AddReceipt extends AppCompatActivity {
         id = intent.getIntExtra("id", -1);
         Receipt receiptObject = null;
 
-        if(id >= 0){
+        if (id >= 0) {
             //edit list component
-            for (Receipt rc: receiptArrayList) {
-                if(rc.getId() == id){
+            for (Receipt rc : receiptArrayList) {
+                if (rc.getId() == id) {
                     receiptObject = rc;
                 }
             }
             et_label.setText(receiptObject.getLabel());
             et_date.setText(String.valueOf(receiptObject.getCreationDate(DateTimeFormatter.ISO_LOCAL_DATE)));
-        }
-        else{
-            //add new list component
-        }
+        }  // else add new list component
 
-        btn_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!(et_label.getText().toString().equals("")) && !(et_date.getText().toString().equals(""))){
-                    if (id >= 0){
-                        //update existing list component
-                        Receipt updatedReceipt = new Receipt(id, et_label.getText().toString(), et_date.getText().toString());
 
-                        receiptArrayList.set(id, updatedReceipt);
-                    }
-                    else{
-                        //add new list component
-                        // create arraylist object
-                        int nextId = SplittrApplication.getNextReceiptId();
-                        Receipt receipt = new Receipt(nextId, et_label.getText().toString(), et_date.getText().toString());
+        btn_ok.setOnClickListener(v -> {
+            if (!(et_label.getText().toString().equals("")) && !(et_date.getText().toString().equals(""))) {
+                if (id >= 0) {
+                    //update existing list component
+                    Receipt updatedReceipt = new Receipt(id, et_label.getText().toString(),
+                            et_date.getText().toString());
 
-                        //adds object to global list of items
-                        receiptArrayList.add(receipt);
-                        SplittrApplication.setNextReceiptId(nextId++);
-                    }
-                    //go back to main activity
-                    Intent intent = new Intent(AddReceipt.this, ReceiptSelectRecyclerViewActivity.class);
-                    startActivity(intent);
+                    receiptArrayList.set(id, updatedReceipt);
+                } else {
+                    //add new list component
+                    // create arraylist object
+                    int nextId = SplittrApplication.getNextReceiptId();
+                    Receipt receipt = new Receipt(nextId, et_label.getText().toString(),
+                            et_date.getText().toString());
+
+                    //adds object to global list of items
+                    receiptArrayList.add(receipt);
+                    SplittrApplication.setNextReceiptId(nextId++);
                 }
-                else{
-                    Toast.makeText(AddReceipt.this, "Please complete all text fields.", Toast.LENGTH_SHORT).show();
-                }
-
+                //go back to main activity
+                Intent intent1 = new Intent(AddReceipt.this,
+                        ReceiptSelectRecyclerViewActivity.class);
+                startActivity(intent1);
+            } else {
+                Toast.makeText(AddReceipt.this, "Please complete all text fields.",
+                        Toast.LENGTH_SHORT).show();
             }
+
         });
 
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddReceipt.this, ReceiptSelectRecyclerViewActivity.class);
-                startActivity(intent);
-            }
+        btn_cancel.setOnClickListener(v -> {
+            Intent intent12 = new Intent(AddReceipt.this,
+                    ReceiptSelectRecyclerViewActivity.class);
+            startActivity(intent12);
         });
 
 

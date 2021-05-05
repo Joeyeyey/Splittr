@@ -20,7 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 // class activity for prompting user login and interacting with the firebase database
-public class LoginSystemActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginSystemActivity extends AppCompatActivity implements View.OnClickListener {
 
     // initialize variables
     private TextView register;
@@ -30,6 +30,7 @@ public class LoginSystemActivity extends AppCompatActivity implements View.OnCli
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class LoginSystemActivity extends AppCompatActivity implements View.OnCli
     //detects user click for all buttons
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.register:
                 startActivity(new Intent(this, com.example.splittr.RegisterUser.class));
                 break;
@@ -68,17 +69,17 @@ public class LoginSystemActivity extends AppCompatActivity implements View.OnCli
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editTextEmail.setError("Email is required");
             editTextEmail.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Please enter a valid email");
             editTextEmail.requestFocus();
             return;
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextPassword.setError("Password is required");
             editTextPassword.requestFocus();
             return;
@@ -88,18 +89,16 @@ public class LoginSystemActivity extends AppCompatActivity implements View.OnCli
         progressBar.setVisibility(View.VISIBLE);
 
         //validate user login
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    //redirect to user profile
-                    startActivity(new Intent(LoginSystemActivity.this, MainActivity.class));
-                }else{
-                    Toast.makeText(LoginSystemActivity.this, "Failed to login. Please check your credentials", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                //redirect to user profile
+                startActivity(new Intent(LoginSystemActivity.this, MainActivity.class));
+            } else {
+                Toast.makeText(LoginSystemActivity.this, "Failed to login. Please check your " +
+                        "credentials", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
             }
+
         });
 
     }

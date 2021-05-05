@@ -10,7 +10,7 @@ public class ReceiptContainer extends Application {
 
     // initialize variables
     private int num_receipts;
-    private String owner;
+    private final String owner;
     private ArrayList<Receipt> receipts;
 
     // constructor
@@ -80,7 +80,8 @@ public class ReceiptContainer extends Application {
         sample_container.createReceipt();
         sample_container.createReceipt();
         sample_container.createReceipt();
-        System.out.println(String.format(Locale.US, "Number of receipts: %d", sample_container.getReceiptCount()));
+        System.out.println(String.format(Locale.US, "Number of receipts: %d",
+                sample_container.getReceiptCount()));
 
         Receipt sample_receipt = new Receipt(3, "Today's McDeez");
         sample_receipt.addItem(new Item(0, "Cheeseburger", 1.50, true));

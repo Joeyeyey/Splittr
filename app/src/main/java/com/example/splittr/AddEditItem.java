@@ -22,6 +22,7 @@ public class AddEditItem extends AppCompatActivity {
     EditText et_item, et_cost, et_person;
     int id;
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,58 +43,54 @@ public class AddEditItem extends AppCompatActivity {
         id = intent.getIntExtra("id", -1);
         Item itemObject = null;
 
-        if(id >= 0){
+        if (id >= 0) {
             //edit list component
-            for (Item item: itemArrayList) {
-                if(item.getId() == id){
+            for (Item item : itemArrayList) {
+                if (item.getId() == id) {
                     itemObject = item;
                 }
             }
             et_item.setText(itemObject.getName());
             et_cost.setText(String.valueOf(itemObject.getCost()));
-            et_person.setText(String.join(", ",  itemObject.getOwners()));
-        }
-        else{
-            //add new list component
-        }
+            et_person.setText(String.join(", ", itemObject.getOwners()));
+        }  // else add new list component
 
-        btn_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!(et_item.getText().toString().equals("")) && !(et_cost.getText().toString().equals("")) && !(et_person.getText().toString().equals(""))){
-                    if (id >= 0){
-                        //update existing list component
 
-                        Item updatedItem = new Item(id, et_item.getText().toString(), Double.parseDouble(et_cost.getText().toString()), false, new ArrayList<>(Arrays.asList(et_person.getText().toString().split("\\s*,\\s*"))));
-                        itemArrayList.set(id, updatedItem);
-                    }
-                    else{
-                        //add new list component
-                        // create arraylist object
-                        int nextId = SplittrApplication.getNextItemId();
-                        Item updatedItem = new Item(nextId, et_item.getText().toString(), Double.parseDouble(et_cost.getText().toString()), false, new ArrayList<>(Arrays.asList(et_person.getText().toString().split("\\s*,\\s*"))));
+        btn_ok.setOnClickListener(v -> {
+            if (!(et_item.getText().toString().equals("")) && !(et_cost.getText().toString().equals("")) && !(et_person.getText().toString().equals(""))) {
+                if (id >= 0) {
+                    //update existing list component
 
-                        //adds object to global list of items
-                        itemArrayList.add(updatedItem);
-                        SplittrApplication.setNextItemId(nextId++);
-                    }
-                    //go back to main activity
-                    Intent intent = new Intent(AddEditItem.this, ItemEditRecyclerViewActivity.class);
-                    startActivity(intent);
+                    Item updatedItem = new Item(id, et_item.getText().toString(),
+                            Double.parseDouble(et_cost.getText().toString()), false,
+                            new ArrayList<>(Arrays.asList(et_person.getText().toString().split("\\s*,\\s*"))));
+                    itemArrayList.set(id, updatedItem);
+                } else {
+                    //add new list component
+                    // create arraylist object
+                    int nextId = SplittrApplication.getNextItemId();
+                    Item updatedItem = new Item(nextId, et_item.getText().toString(),
+                            Double.parseDouble(et_cost.getText().toString()), false,
+                            new ArrayList<>(Arrays.asList(et_person.getText().toString().split("\\s*,\\s*"))));
+
+                    //adds object to global list of items
+                    itemArrayList.add(updatedItem);
+                    SplittrApplication.setNextItemId(nextId++);
                 }
-                else{
-                    Toast.makeText(AddEditItem.this, "Please complete all text fields.", Toast.LENGTH_SHORT).show();
-                }
-
+                //go back to main activity
+                Intent intent1 = new Intent(AddEditItem.this,
+                        ItemEditRecyclerViewActivity.class);
+                startActivity(intent1);
+            } else {
+                Toast.makeText(AddEditItem.this, "Please complete all text fields.",
+                        Toast.LENGTH_SHORT).show();
             }
+
         });
 
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddEditItem.this, ItemEditRecyclerViewActivity.class);
-                startActivity(intent);
-            }
+        btn_cancel.setOnClickListener(v -> {
+            Intent intent12 = new Intent(AddEditItem.this, ItemEditRecyclerViewActivity.class);
+            startActivity(intent12);
         });
     }
 }

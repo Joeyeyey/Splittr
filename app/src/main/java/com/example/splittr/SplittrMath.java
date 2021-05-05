@@ -11,19 +11,25 @@ import java.math.BigDecimal;
 public class SplittrMath {
 
     // initialize variables
-    private static final int roundingMethod = BigDecimal.ROUND_HALF_UP; // method for rounding during arithmetic operations
-    private static BigDecimal taxRate = BigDecimal.valueOf(0.08375); // tax rate as a decimal percentage
+    private static final int roundingMethod = BigDecimal.ROUND_HALF_UP; // method for rounding
+    // during arithmetic operations
+    private static BigDecimal taxRate = BigDecimal.valueOf(0.08375); // tax rate as a decimal
+    // percentage
 
-    private Receipt currentReceipt; // the receipt that this math class is being applied on
+    private final Receipt currentReceipt; // the receipt that this math class is being applied on
 
-    private Hashtable<String, BigDecimal> userSubtotals = new Hashtable<>(); // hashmap of user -> subtotal owes
-    private Hashtable<String, BigDecimal> userAdditionals = new Hashtable<>(); // hashmap of user -> additional owes
-    private Hashtable<String, BigDecimal> userFinalTotals = new Hashtable<>(); // hashmap of user -> total owes (calculated by summing the other to hashmaps
+    private final Hashtable<String, BigDecimal> userSubtotals = new Hashtable<>(); // hashmap of
+    // user -> subtotal owes
+    private final Hashtable<String, BigDecimal> userAdditionals = new Hashtable<>(); // hashmap
+    // of user -> additional owes
+    private final Hashtable<String, BigDecimal> userFinalTotals = new Hashtable<>(); // hashmap
+    // of user -> total owes (calculated by summing the other to hashmaps
 
-    private BigDecimal weightedAdditional; // additional owes that are split amongst users based on their ratio of subtotal owes to the receipt total
+    private BigDecimal weightedAdditional; // additional owes that are split amongst users based
+    // on their ratio of subtotal owes to the receipt total
     private BigDecimal unweightedAdditional; // additional owes that are split amongst users evenly
 
-    private boolean approximateTaxes;
+    private final boolean approximateTaxes;
 
     // constructor
     public SplittrMath(Receipt receipt) {
@@ -48,12 +54,15 @@ public class SplittrMath {
         return taxRate;
     }
 
-    // Gets the list of items from the receipt and adds the amount each owner owes into the user subtotals hashmap
+    // Gets the list of items from the receipt and adds the amount each owner owes into the user
+    // subtotals hashmap
     public void processSubtotal() {
         userSubtotals.clear();
         for (Item item : currentReceipt.getItems()) {
             if (item.ownerCount() > 0) {
-                BigDecimal splitCost = item.getCost().divide(BigDecimal.valueOf(item.ownerCount()), roundingMethod);
+                BigDecimal splitCost =
+                        item.getCost().divide(BigDecimal.valueOf(item.ownerCount()),
+                                roundingMethod);
                 for (String user : item.getOwners()) {
                     addToSubtotal(user, splitCost);
                 }
@@ -66,22 +75,27 @@ public class SplittrMath {
     // add the taxed value of the item to the items owners distributed evenly
     public void processTax(Item item) {
         if (item.isTaxable()) {
-            BigDecimal splitTax = getTaxedValue(item.getCost()).divide(BigDecimal.valueOf(item.ownerCount()), 10, roundingMethod);
-            System.out.printf("Value of %s is $%.02f and taxed is $%.02f.\n", item.getName(), item.getCost(), getTaxedValue(item.getCost()));
+            BigDecimal splitTax =
+                    getTaxedValue(item.getCost()).divide(BigDecimal.valueOf(item.ownerCount()),
+                            10, roundingMethod);
+            System.out.printf("Value of %s is $%.02f and taxed is $%.02f.\n", item.getName(),
+                    item.getCost(), getTaxedValue(item.getCost()));
             for (String user : item.getOwners()) {
                 addToAdditional(user, splitTax);
             }
         }
     }
 
-    // adds the taxed value of all user subtotals using the set tax rate (assumes all items are taxed)
+    // adds the taxed value of all user subtotals using the set tax rate (assumes all items are
+    // taxed)
     public void processGlobalTax() {
         for (String user : userSubtotals.keySet()) {
             addToAdditional(user, getTaxedValue(userSubtotals.get(user)));
         }
     }
 
-    // process additional owes that are split amongst users based on their ratio of subtotal owes to the receipt total into the user additional owes hashmap
+    // process additional owes that are split amongst users based on their ratio of subtotal owes
+    // to the receipt total into the user additional owes hashmap
     public void processWeighted() {
         BigDecimal subtotal = getSumSubtotal();
         for (String user : userSubtotals.keySet()) {
@@ -90,7 +104,8 @@ public class SplittrMath {
         }
     }
 
-    // process additional owes that are split amongst users evenly into the user additional owes hashmap
+    // process additional owes that are split amongst users evenly into the user additional owes
+    // hashmap
     public void processUnweighted() {
         BigDecimal subtotal = getSumSubtotal();
         for (String user : userSubtotals.keySet()) {
@@ -98,11 +113,14 @@ public class SplittrMath {
         }
     }
 
-    // calculates the user final owes by processing all other amounts into their hashmaps and summing the two other hashmaps
+    // calculates the user final owes by processing all other amounts into their hashmaps and
+    // summing the two other hashmaps
     public void calculateFinal() {
         resetFinalTotals();
         for (String user : userSubtotals.keySet()) {
-            userFinalTotals.put(user, userSubtotals.get(user).add(userAdditionals.getOrDefault(user, BigDecimal.ZERO)));
+            userFinalTotals.put(user,
+                    userSubtotals.get(user).add(userAdditionals.getOrDefault(user,
+                            BigDecimal.ZERO)));
         }
     }
 
@@ -111,7 +129,7 @@ public class SplittrMath {
         return amount.multiply(taxRate);
     }
 
-    // Gets the sum of all user subtotals from the user subtotal hashmap
+    // gets the sum of all user subtotals from the user subtotal hashmap
     private BigDecimal getSumSubtotal() {
         BigDecimal subtotal = BigDecimal.ZERO;
         for (BigDecimal value : userSubtotals.values()) {
@@ -210,7 +228,7 @@ public class SplittrMath {
     }
 
     public static void printHashmap(Hashtable<String, BigDecimal> table) {
-        for (String name: table.keySet()) {
+        for (String name : table.keySet()) {
             String value = table.get(name).toString();
             System.out.println(name + " " + value);
         }
@@ -247,7 +265,8 @@ public class SplittrMath {
         food8.addOwner(user1);
         food9.addOwner(user6);
 
-        testReceipt.addItems(Arrays.asList(food1, food2, food3, food4, food5, food6, food7, food8, food9));
+        testReceipt.addItems(Arrays.asList(food1, food2, food3, food4, food5, food6, food7, food8
+                , food9));
 
         SplittrMath mather = new SplittrMath(testReceipt, 24.62, false);
         mather.calculateFinal();

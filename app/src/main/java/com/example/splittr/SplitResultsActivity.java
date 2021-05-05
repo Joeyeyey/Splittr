@@ -24,6 +24,7 @@ public class SplitResultsActivity extends AppCompatActivity {
     ListView lv_show_final_amount;
     ArrayList<String> totalAmounts = new ArrayList<>();
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,27 +41,26 @@ public class SplitResultsActivity extends AppCompatActivity {
         System.out.println(" - Unweighted Amount - ");
         System.out.println(splitter.getUnweightedAdditional());
         System.out.println(" - User Subtotals - ");
-        splitter.printHashmap(splitter.getUserSubtotals());
+        SplittrMath.printHashmap(splitter.getUserSubtotals());
         System.out.println(" - User Additionals - ");
-        splitter.printHashmap(splitter.getUserAdditionals());
+        SplittrMath.printHashmap(splitter.getUserAdditionals());
         System.out.println(" - User Finals - ");
-        splitter.printHashmap(splitter.getUserFinalTotals());
+        SplittrMath.printHashmap(splitter.getUserFinalTotals());
         System.out.println(" ======================= ");
 
         Hashtable<String, BigDecimal> results = splitter.getUserFinalTotals();
-        for (String name : results.keySet()){
-            totalAmounts.add(name + ": $" + String.format(Locale.getDefault(), "%.2f", results.get(name)));
+        for (String name : results.keySet()) {
+            totalAmounts.add(name + ": $" + String.format(Locale.getDefault(), "%.2f",
+                    results.get(name)));
         }
 
-        ArrayAdapter listAdapter = new ArrayAdapter(SplitResultsActivity.this, R.layout.lv_final_amount_layout, totalAmounts);
+        ArrayAdapter listAdapter = new ArrayAdapter(SplitResultsActivity.this,
+                R.layout.lv_final_amount_layout, totalAmounts);
         lv_show_final_amount.setAdapter(listAdapter);
 
-        btn_split_another_receipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SplitResultsActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        btn_split_another_receipt.setOnClickListener(v -> {
+            Intent intent = new Intent(SplitResultsActivity.this, MainActivity.class);
+            startActivity(intent);
         });
     }
 }

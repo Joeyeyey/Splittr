@@ -60,7 +60,7 @@
         <activity android:name=".SplitResultsActivity"
             android:parentActivityName=".GetTaxAndTipActivity" />
 
-        <activity android:name=".selectedImageActivity" />
+        <activity android:name=".SelectedImageActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

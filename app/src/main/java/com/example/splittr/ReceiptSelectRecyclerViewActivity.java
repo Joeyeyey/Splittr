@@ -30,6 +30,7 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    // on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,18 +40,18 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
         receiptArrayList = SplittrApplication.getReceiptContainer().getReceipts();
 
         Log.d(TAG, "onCreate: " + receiptArrayList.toString());
-//        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, "Arraylist size = " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(com.example.splittr.EditReceiptRecyclerViewActivity.this, "List count =
+//        " + receiptArrayList.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Arraylist size = " + receiptArrayList.size(), Toast.LENGTH_SHORT)
+//        .show();
 
         btn_addOne = findViewById(R.id.btn_addOne);
 
         //set onclick action for add button
-        btn_addOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ReceiptSelectRecyclerViewActivity.this, AddReceipt.class);
-                startActivity(intent);
-            }
+        btn_addOne.setOnClickListener(view -> {
+            Intent intent = new Intent(ReceiptSelectRecyclerViewActivity.this,
+                    AddReceipt.class);
+            startActivity(intent);
         });
 
         recyclerView = findViewById(R.id.lv_recyclerview);
@@ -61,7 +62,8 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //specify adapter
-        mAdapter = new ReceiptSelectAdapter(receiptArrayList, ReceiptSelectRecyclerViewActivity.this);
+        mAdapter = new ReceiptSelectAdapter(receiptArrayList,
+                ReceiptSelectRecyclerViewActivity.this);
         recyclerView.setAdapter(mAdapter);
 
         //attach ItemTouchHelper to RecyclerView
@@ -70,9 +72,12 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
     }
 
     //initialize ItemTouchHelper to delete receipt items
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0
+            , ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
@@ -85,8 +90,7 @@ public class ReceiptSelectRecyclerViewActivity extends AppCompatActivity {
     };
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
