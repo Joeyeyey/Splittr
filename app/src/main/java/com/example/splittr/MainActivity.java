@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
             SplittrApplication.globalPostResponse = "empty";
             encodedImage = encodeBase64Image(data.getData());
+            Toast.makeText(this, "Processing image...", Toast.LENGTH_SHORT).show();
 
             tesseractResult = postTesseract(encodedImage);
             Log.d("POST FINAL",  SplittrApplication.globalPostResponse);
@@ -314,6 +315,7 @@ public class MainActivity extends AppCompatActivity {
                         SplittrApplication.globalJSONObj = response;
                         Log.d("POST RESPONSE",  SplittrApplication.globalPostResponse);
                         SplittrApplication.addReceiptFromJson();
+                        Toast.makeText(MainActivity.this, "Finished importing image!", Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
             @Override
